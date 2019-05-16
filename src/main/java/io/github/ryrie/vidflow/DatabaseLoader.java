@@ -26,9 +26,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Post post1 = this.posts.save(new Post(1L, "one", "http://localhost/playlist.m3u8", "Hello world!", 0, Date.from(Instant.now()), Date.from(Instant.now())));
-        Post post2 = this.posts.save(new Post(2L, "two", "http://localhost/playlist.m3u8", "foo", 0, Date.from(Instant.now()), Date.from(Instant.now())));
-        Post post3 = this.posts.save(new Post(3L, "three", "http://localhost/playlist.m3u8", "bar", 0, Date.from(Instant.now()), Date.from(Instant.now())));
-        Post post4 = this.posts.save(new Post(4L, "four", "http://localhost/playlist.m3u8", "bzb", 0, Date.from(Instant.now()), Date.from(Instant.now())));
+        Post post1 = this.posts.save(new Post(1L, "one", "http:/localhost/source.mp4", "Hello world!", 0, Date.from(Instant.now()), Date.from(Instant.now())));
+        Post post2 = this.posts.save(new Post(2L, "two", "http:/localhost/source.mp4", "foo", 0, Date.from(Instant.now()), Date.from(Instant.now())));
+        Post post3 = this.posts.save(new Post(3L, "three", "http:/localhost/source.mp4", "bar", 0, Date.from(Instant.now()), Date.from(Instant.now())));
+        Post post4 = this.posts.save(new Post(4L, "four", "http:/localhost/source.mp4", "bzb", 0, Date.from(Instant.now()), Date.from(Instant.now())));
     }
 }
