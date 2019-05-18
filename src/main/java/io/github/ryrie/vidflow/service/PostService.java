@@ -5,20 +5,29 @@ import io.github.ryrie.vidflow.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
     @Autowired
     PostRepository postRepository;
 
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
-    public Long SavePost(Post post) {
+    public Long savePost(Post post) {
         postRepository.save(post);
         return post.getPostno();
     }
 
-    public Post GetPost(Long postno) {
+    public Post getPost(Long postno) {
         return postRepository.findById(postno).get();
+    }
+
+    public List<Post> getPostAll() {
+        return postRepository.findAll();
     }
 
 }
