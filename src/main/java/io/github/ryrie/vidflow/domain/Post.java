@@ -1,20 +1,13 @@
 package io.github.ryrie.vidflow.domain;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Post {
-
     /**
      * 글 번호 id Integer PK
      *     작성자 writer varchar
@@ -24,7 +17,7 @@ public class Post {
      *     영상 경로 videosrc varchar
      */
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postno;
 
     private String writer;
@@ -35,12 +28,28 @@ public class Post {
 
     private int numcomment;
 
+    private int numlike;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date regdate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date upadtedate;
 
+    public Post() {
+    }
 
+    public static Post createPost(String writer, String videosrc, String content) {
+        Post post = new Post();
+        post.setWriter(writer);
+        post.setVideosrc(videosrc);
+        post.setContent(content);
+        post.setNumcomment(0);
+        post.setNumlike(0);
+        post.setRegdate(Date.from(Instant.now()));
+        post.setUpadtedate(Date.from(Instant.now()));
+
+        return post;
+    }
 
 }

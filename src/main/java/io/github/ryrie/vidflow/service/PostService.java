@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public class PostService {
 
-    @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
+    @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
-    public Long savePost(Post post) {
+    public Long writePost(Post post) {
         postRepository.save(post);
         return post.getPostno();
     }

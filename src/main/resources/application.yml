@@ -3,6 +3,8 @@ spring:
     show_sql: true
     database: MYSQL
     generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
   datasource:
     url: jdbc:mariadb://vidflow-db.c3sgswc5qc63.ap-northeast-2.rds.amazonaws.com:3306/vidflow
     username: mariadmin
