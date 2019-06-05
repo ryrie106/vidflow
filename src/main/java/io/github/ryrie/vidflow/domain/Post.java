@@ -3,24 +3,24 @@ package io.github.ryrie.vidflow.domain;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
 public class Post {
-    /**
-     * 글 번호 id Integer PK
-     *     작성자 writer varchar
-     *     작성시간
-     *     좋아요 수 like Integer
-     *     내용 content varchar
-     *     영상 경로 videosrc varchar
-     */
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postno;
+    @Column(name = "POST_ID")
+    private Long pid;
 
-    private String writer;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User writer;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     private String videosrc;
 
@@ -39,7 +39,12 @@ public class Post {
     public Post() {
     }
 
-    public static Post createPost(String writer, String videosrc, String content) {
+    private void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setPost(this);
+    }
+
+    public static Post createPost(User writer, String videosrc, String content) {
         Post post = new Post();
         post.setWriter(writer);
         post.setVideosrc(videosrc);
@@ -51,5 +56,4 @@ public class Post {
 
         return post;
     }
-
 }
