@@ -3,9 +3,11 @@ package io.github.ryrie.vidflow.repository;
 import io.github.ryrie.vidflow.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByUid(Long uid) ;
+    Optional<User> findByUsername(String username) ;
 
-    User findByEmail(String email);
+    Boolean existsByUsername(String username);
 }

@@ -10,60 +10,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
-public class User implements UserDetails {
+public class User {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id @GeneratedValue
-    @Column(name = "USER_ID")
-    private Long uid;
-
-    private String email; // 여기서는 email 주소가 username
-
-    private String password;
+    private Long id;
 
     private String name;
+
+    private String username;
+
+    private String email;
+
+    private String password;
 
 //    @OneToMany(mappedBy = "writer")
 //    private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "writer")
-    private List<Post> posts = new ArrayList<>();
+//    @OneToMany(mappedBy = "writer")
+//    private List<Post> posts = new ArrayList<>();
 
-    private String[] authorities = {"USER"};// UserDetails
 
-    private boolean isAccountNonExpired = true; // UserDetails
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    private boolean isAccountNonLocked = true;// UserDetails
-
-    private boolean isCredentialsNonExpired = true;// UserDetails
-
-    private boolean isEnabled = true;// UserDetails
-
-    public static User createUser(UserDTO dto) {
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setName(dto.getName());
-        return user;
+    public User(String name, String username, String email, String password) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
-
-    @Override
-    public List<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for(String authority : this.authorities) {
-            authorities.add(new SimpleGrantedAuthority(authority));
-        }
-        return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
 }

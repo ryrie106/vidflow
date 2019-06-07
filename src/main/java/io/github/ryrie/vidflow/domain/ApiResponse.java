@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDTO {
-    private String email; // 여기서는 email 주소가 username
-    private String password;
-    private String name;
+public class ApiResponse {
+    private Boolean success;
+    private String message;
 }
