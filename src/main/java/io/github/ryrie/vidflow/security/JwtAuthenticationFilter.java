@@ -23,10 +23,10 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);

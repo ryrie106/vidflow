@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.domain;
+package io.github.ryrie.vidflow.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

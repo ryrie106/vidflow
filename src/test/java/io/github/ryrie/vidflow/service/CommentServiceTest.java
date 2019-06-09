@@ -1,9 +1,5 @@
 package io.github.ryrie.vidflow.service;
 
-
-import io.github.ryrie.vidflow.domain.CommentDTO;
-import io.github.ryrie.vidflow.domain.Post;
-import io.github.ryrie.vidflow.domain.User;
 import lombok.Setter;
 import org.junit.Before;
 import org.junit.Test;

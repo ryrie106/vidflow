@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     UserRepository userRepository;
 
     @Override

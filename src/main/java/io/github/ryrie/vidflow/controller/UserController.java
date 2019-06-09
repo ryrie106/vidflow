@@ -2,6 +2,10 @@ package io.github.ryrie.vidflow.controller;
 
 import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.exception.AppException;
+import io.github.ryrie.vidflow.payload.ApiResponse;
+import io.github.ryrie.vidflow.payload.JwtAuthenticationResponse;
+import io.github.ryrie.vidflow.payload.LoginRequest;
+import io.github.ryrie.vidflow.payload.SignUpRequest;
 import io.github.ryrie.vidflow.repository.RoleRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.JwtTokenProvider;
@@ -27,19 +31,19 @@ import java.util.Collections;
 @RestController
 public class UserController {
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     AuthenticationManager authenticationManager;
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     UserRepository userRepository;
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     RoleRepository roleRepository;
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/login")

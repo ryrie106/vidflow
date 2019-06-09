@@ -1,13 +1,14 @@
 package io.github.ryrie.vidflow.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Comment {
 
     @Id @GeneratedValue
@@ -24,22 +25,8 @@ public class Comment {
 
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date regdate;
+    private Instant regdate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedate;
+    private Instant updatedate;
 
-    public Comment() {}
-
-    public static Comment createComment(Post post, User user, String content) {
-        Comment comment = new Comment();
-        comment.setPost(post);
-//        comment.setWriter(user);
-        comment.setContent(content);
-        comment.setRegdate(Date.from(Instant.now()));
-        comment.setUpdatedate(Date.from(Instant.now()));
-
-        return comment;
-    }
 }
