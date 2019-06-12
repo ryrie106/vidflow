@@ -23,6 +23,7 @@ before_install:
 before_deploy:
   - zip -r vidflow *
   - mkdir -p deploy
+  - mv vidflow.zip deploy/vidflow.zip
 
 deploy:
   - provider: s3
