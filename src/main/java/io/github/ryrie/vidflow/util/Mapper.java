@@ -7,7 +7,8 @@ public class Mapper {
     public static PostResponse mapPostToPostResponse(Post post) {
 
         PostResponse postResponse = new PostResponse();
-        postResponse.setId(post.getId());
+        postResponse.setWriter(post.getWriter());
+        postResponse.setVideosrc(post.getVideosrc());
         postResponse.setContent(post.getContent());
         postResponse.setRegdate(post.getRegdate());
         postResponse.setUpdateddate(post.getUpadteddate());

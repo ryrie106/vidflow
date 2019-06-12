@@ -38,13 +38,6 @@ public class User {
 
     private String password;
 
-//    @OneToMany(mappedBy = "writer")
-//    private List<Comment> comments = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "writer")
-//    private List<Post> posts = new ArrayList<>();
-
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

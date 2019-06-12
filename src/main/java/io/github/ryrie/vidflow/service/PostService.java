@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +26,8 @@ public class PostService {
     public Post createPost(PostRequest postRequest) {
         Post post = new Post();
 
-        post.setWriter(postRequest.getWriter());
         post.setVideosrc(postRequest.getVideosrc());
         post.setContent(postRequest.getContent());
-
-        Instant now = Instant.now();
-        post.setRegdate(now);
-        post.setUpadteddate(now);
-
         return postRepository.save(post);
     }
 

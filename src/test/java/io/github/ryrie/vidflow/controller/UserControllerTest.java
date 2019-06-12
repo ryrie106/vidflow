@@ -1,6 +1,5 @@
 package io.github.ryrie.vidflow.controller;
 
-import lombok.Setter;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 public class UserControllerTest {
 
-    @Setter(onMethod_ = @Autowired)
+    @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mvc;

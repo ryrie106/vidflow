@@ -33,7 +33,7 @@ public class PostController {
         return postService.getAllPosts(currentUser);
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest) {
         Post post = postService.createPost(postRequest);

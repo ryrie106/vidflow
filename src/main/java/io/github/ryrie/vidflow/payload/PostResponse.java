@@ -10,7 +10,8 @@ import java.time.Instant;
 @Setter
 public class PostResponse {
     private Long id;
-    private User writer;
+    // TODO: writer 정보 불러오는것 추가.
+    private Long writer;
     private String videosrc;
     private String content;
     private Instant regdate;
