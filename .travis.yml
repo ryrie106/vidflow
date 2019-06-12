@@ -19,3 +19,16 @@ notifications:
 
 before_install:
   - chmod +x mvnw
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: vidflow
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    wait-until-deployed: true
+    on:
+      repo: ryrie/vidflow
+      branch: master
