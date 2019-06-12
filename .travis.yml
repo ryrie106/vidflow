@@ -16,3 +16,6 @@ notifications:
   email:
     recipients:
       - ryrie106@gmail.com
+
+before_install:
+  - chmod +x mvnw
