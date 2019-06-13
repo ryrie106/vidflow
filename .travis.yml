@@ -38,3 +38,17 @@ deploy:
     on:
       repo: ryrie/vidflow
       branch: master
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: vidflow
+    key: vidflow.zip
+    bundle_type: zip
+    application: vidflow
+    deployment_group: vidflow-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: ryrie/vidflow
+      branch: master
