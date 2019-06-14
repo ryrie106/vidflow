@@ -2,6 +2,9 @@ package io.github.ryrie.vidflow.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -12,21 +15,19 @@ import java.time.Instant;
 public class Comment {
 
     @Id @GeneratedValue
-    @Column(name = "COMMENT_ID")
-    private Long cid;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "POST_ID")
-    private Post post;
+    @CreatedBy
+    private Long writer;
 
-//    @ManyToOne
-//    @JoinColumn(name = "MEMBER_ID")
-//    private User writer;
+    private Long post;
 
     private String content;
 
+    @CreatedDate
     private Instant regdate;
 
+    @LastModifiedDate
     private Instant updatedate;
 
 }
