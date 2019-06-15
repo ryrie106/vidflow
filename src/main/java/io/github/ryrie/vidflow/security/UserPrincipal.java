@@ -21,11 +21,9 @@ public class UserPrincipal implements UserDetails {
 
     private Long id;
 
-    private String name;
-
-    private String username;
-
     private String email;
+
+    private String name;
 
     @JsonIgnore
     private String password;
@@ -39,11 +37,18 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getName(),
-                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
         );
+    }
+
+    /**
+     * 이메일 주소가 username(스프링 시큐리티에서의 아이디)
+     */
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override

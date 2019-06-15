@@ -16,9 +16,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-                "username"
-        }),
-        @UniqueConstraint(columnNames = {
                 "email"
         })
 })
@@ -30,11 +27,9 @@ public class User {
     @Id @GeneratedValue
     private Long id;
 
+    private String email; // 이메일이 로그인 아이디.
+
     private String name;
-
-    private String username;
-
-    private String email;
 
     private String password;
 
@@ -44,9 +39,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String name, String username, String email, String password) {
+    public User(String email, String name, String password) {
         this.name = name;
-        this.username = username;
         this.email = email;
         this.password = password;
     }
