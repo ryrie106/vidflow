@@ -11,13 +11,14 @@ import io.github.ryrie.vidflow.service.CommentService;
 import io.github.ryrie.vidflow.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @RestController
 public class CommentController {
 
@@ -30,6 +31,7 @@ public class CommentController {
     }
 
     @PostMapping("/{postId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest,
                                            @PathVariable("postId") Long postId) {
         Comment comment = commentService.createComment(commentRequest, postId);

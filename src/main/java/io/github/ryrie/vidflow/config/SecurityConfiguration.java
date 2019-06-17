@@ -81,10 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, "/comments/**").permitAll()
                 .anyRequest()
                     .authenticated();
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers("/write").hasAuthority("USER")
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.NEVER); // 사용자의 쿠키에 세션을 저장하지 않겠다는 옵션.
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,20 +27,20 @@ import java.util.Collections;
 @RestController
 public class UserController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtTokenProvider tokenProvider;
+    public UserController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
