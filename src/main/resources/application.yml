@@ -10,7 +10,21 @@ spring:
     username: mariadmin
     password: mariapassword
     driver-class-name: org.mariadb.jdbc.Driver
+  servlet:
+    multipart:
+      # Enable multipart uploads
+      enabled: true
+      # Threshold after which files are written to disk.
+      file-size-threshold: 2KB
+      # Max file size.
+      max-file-size: 100MB
+      # Max Request Size
+      max-request-size: 125MB
+
+file:
+  upload-dir: C:\uploads
 
 app:
   jwtSecret: JWTSuperSecretKey
   jwtExpirationInMs: 604800000
+
