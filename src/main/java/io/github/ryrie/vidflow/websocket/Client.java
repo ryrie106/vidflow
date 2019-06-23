@@ -2,8 +2,6 @@ package io.github.ryrie.vidflow.websocket;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +9,7 @@ import java.util.Random;
 
 public class Client {
 
-    private final String VIDEO_DIR = "C:\\uploads";
+    private final String VIDEO_DIR = "/home/ubuntu/uploads";
 
     @Getter
     private String fileName;
@@ -76,5 +74,13 @@ public class Client {
             }
         }
         return temp.toString();
+    }
+
+    public void afterTransferComplete() {
+        try {
+            this.fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

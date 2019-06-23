@@ -56,7 +56,9 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
                 response = new JSONObject();
                 response.put("type", "TRANSFER_COMPLETE");
                 response.put("fileName", c.getFileName());
+                c.afterTransferComplete(); // fileOutputStream을 닫는다.
                 session.sendMessage(new TextMessage(response.toString()));
+                clients.remove(session.getId());
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
@@ -78,9 +80,10 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
 
 
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        clients.remove(session.getId());
-        System.out.println("WebSocket Session Closed" + session.getId());
-    }
+//    @Override
+//    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+//        clients.get(session.getId()).afterConnectionClosed();
+//        clients.remove(session.getId());
+//        System.out.println("WebSocket Session Closed" + session.getId());
+//    }
 }
