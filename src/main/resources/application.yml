@@ -6,10 +6,10 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mariadb://vidflow-db.c3sgswc5qc63.ap-northeast-2.rds.amazonaws.com:3306/vidflow
-    username: mariadmin
-    password: mariapassword
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://vidflow-db.c3sgswc5qc63.ap-northeast-2.rds.amazonaws.com:3306/vidflow
+    username: mysqladmin
+    password: mysqlpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
       # Enable multipart uploads
@@ -22,7 +22,7 @@ spring:
       max-request-size: 125MB
 
 file:
-  upload-dir: C:\uploads
+  upload-dir: /home/ubuntu/www/videos
 
 app:
   jwtSecret: JWTSuperSecretKey
