@@ -1,7 +1,10 @@
 package io.github.ryrie.vidflow.websocket;
 
+import io.github.ryrie.vidflow.service.PostService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,7 +12,9 @@ import java.util.Random;
 
 public class Client {
 
-    private final String VIDEO_DIR = "/home/ubuntu/uploads";
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
+
+    private String VIDEO_DIR = "/home/ubuntu/www/videos";
 
     @Getter
     private String fileName;
@@ -37,7 +42,8 @@ public class Client {
         try {
             this.fos = new FileOutputStream(VIDEO_DIR + "/" + this.fileName + "." + this.extension);
         } catch(IOException e) {
-            System.out.println("File creation Failed");
+            logger.error("File creation failed");
+            e.printStackTrace();
         }
 
         System.out.println("------Upload File Info------");
@@ -51,6 +57,7 @@ public class Client {
         try {
             fos.write(b);
         } catch(IOException e) {
+            logger.error("File Write(pushToFile) failed");
             e.printStackTrace();
         }
     }

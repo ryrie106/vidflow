@@ -85,8 +85,7 @@ public class UserController {
 
     @GetMapping("/me")
     public UserSummary getCurrnetUser(@CurrentUser UserPrincipal currentUser) {
-        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
-        return userSummary;
+        return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
     @GetMapping("/checkNameAvailability")

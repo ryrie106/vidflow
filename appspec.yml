@@ -3,3 +3,8 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/vidflow/build
+
+hooks:
+  AfterInstall: # 배포가 끝나면 실행
+    - location: execute-deploy.sh
+      timeout: 180

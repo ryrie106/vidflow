@@ -10,21 +10,12 @@ spring:
     username: mysqladmin
     password: mysqlpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
-  servlet:
-    multipart:
-      # Enable multipart uploads
-      enabled: true
-      # Threshold after which files are written to disk.
-      file-size-threshold: 2KB
-      # Max file size.
-      max-file-size: 100MB
-      # Max Request Size
-      max-request-size: 125MB
 
 file:
-  upload-dir: /home/ubuntu/www/videos
+  upload-dir: /home/user/uploads
 
 app:
   jwtSecret: JWTSuperSecretKey
   jwtExpirationInMs: 604800000
+
 
