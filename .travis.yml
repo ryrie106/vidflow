@@ -19,6 +19,7 @@ notifications:
 
 before_install:
   - chmod +x mvnw
+  - chmod +x execute-deploy.sh
 
 before_deploy:
   - zip -r vidflow * .*
