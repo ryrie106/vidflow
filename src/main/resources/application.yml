@@ -12,11 +12,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
-
+  port: 8080
+  ssl:
+    enabled: true
+    key-store: /home/ubuntu/key/vidflow.jks
+    key-store-password: sslpassword
+    key-password: sslpassword
 
 
 file:
-  upload-dir: /home/user/uploads
+  upload-dir: /home/ubuntu/www/videos
 
 app:
   jwtSecret: JWTSuperSecretKey
