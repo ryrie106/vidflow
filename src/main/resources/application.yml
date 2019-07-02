@@ -11,6 +11,10 @@ spring:
     password: mysqlpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+server:
+
+
+
 file:
   upload-dir: /home/user/uploads
 

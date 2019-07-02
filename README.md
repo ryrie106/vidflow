@@ -1,6 +1,6 @@
 # Vidflow [![Build Status](https://travis-ci.org/ryrie/vidflow.svg?branch=master)](https://travis-ci.org/ryrie/vidflow)
 
-##개요
+## 개요
 
 이 프로젝트는 저의 대학 졸업 작품의 연장선상으로, 
 Tiktok(www.tiktok.com)과 같은 기능을 하는 웹 애플리케이션을 제작 하는 것이 목표입니다.
@@ -30,6 +30,3 @@ CD : AWS Codedeploy
 ## Build 방법
 
 ./mvnw compile
-
-## Lisence
-MIT
