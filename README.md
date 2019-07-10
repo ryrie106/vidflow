@@ -1,32 +1,25 @@
 # Vidflow [![Build Status](https://travis-ci.org/ryrie/vidflow.svg?branch=master)](https://travis-ci.org/ryrie/vidflow)
 
-## 개요
 
-이 프로젝트는 저의 대학 졸업 작품의 연장선상으로, 
-Tiktok(www.tiktok.com)과 같은 기능을 하는 웹 애플리케이션을 제작 하는 것이 목표입니다.
+Tiktok(www.tiktok.com)과 같은 기능을 하는 것을 목표로 하는 web application 입니다.
 
-각각에 대한 정보는 doc 폴더에 작성하였습니다.
+필자의 개발 공부의 목적으로만 사용됩니다. 
 
-## 스택
-### Frontend
-React.js를 사용.. antd-mobile의 컴포넌트를 사용하였습니다.
+### 사용한 기술스택
 
-### Backend
+Frontend : React.js를 이용하여 SPA를 제작하고 github-page에 배포 하였습니다.  www.github.com/ryrie/vidflow-view
+
+Backend : Spring Boot을 비롯한 Spring Framework
 
 
+### 현재 프로젝트에서 사용하고 있는 환경
 
-ORM Framework : Spring JPA Data
+API server HOST : AWS EC2 Ubuntu 18.04
 
-### 프로젝트에서 사용한 인프라
+Streaming Server : apache2(Http Live Streaming)
 
-server : Ubuntu 18.04(AWS EC2)
-
-DB : MySQL(AWS RDS)
+DB : AWS RDS(MySQL)
 
 CI : travis.ci
 
 CD : AWS Codedeploy
-
-## Build 방법
-
-./mvnw compile

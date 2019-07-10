@@ -2,7 +2,6 @@ package io.github.ryrie.vidflow.security;
 
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.repository.UserRepository;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,8 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional

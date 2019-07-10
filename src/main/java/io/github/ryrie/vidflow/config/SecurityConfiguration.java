@@ -18,29 +18,35 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
     private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    // implements a filter that
-    // reads JWT authentication token from the Authorization header of all the requests
-    // loads the user details associated with that token.
-    // Sets the user details in Spring Security's SecurityContext. Spring Security uses the user details to
-    // perform authorization checks. We can also access the user details stored in the SecurityContext in our
-    // controllers to perform our business logic.
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+    @Autowired
+    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
+                                 JwtAuthenticationEntryPoint unauthorizedHandler,
+                                 JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
+
+//    @Bean
+//    // implements a filter that
+//    // reads JWT authentication token from the Authorization header of all the requests
+//    // loads the user details associated with that token.
+//    // Sets the user details in Spring Security's SecurityContext. Spring Security uses the user details to
+//    // perform authorization checks. We can also access the user details stored in the SecurityContext in our
+//    // controllers to perform our business logic.
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+//        return new JwtAuthenticationFilter();
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -83,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/videoUpload/**").permitAll()
                 .anyRequest()
                     .authenticated();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

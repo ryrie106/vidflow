@@ -6,7 +6,9 @@ import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
+import io.github.ryrie.vidflow.service.FileStorageService;
 import io.github.ryrie.vidflow.service.PostService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,19 +20,24 @@ import java.util.List;
 
 @RequestMapping("/posts")
 @RestController
+@Slf4j
 public class PostController {
 
-    @Autowired
     private PostService postService;
 
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
     @GetMapping(value = "/{postId}")
-    public PostResponse getPostById(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {
-        return postService.getPostById(currentUser, postId);
+    public PostResponse getPostById(@PathVariable("postId") Long postId) {
+        return postService.getPostById(postId);
     }
 
     @GetMapping
-    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser) {
-        return postService.getAllPosts(currentUser);
+    public List<PostResponse> getPosts(/*@CurrentUser UserPrincipal currentUser*/) {
+        return postService.getAllPosts(/*currentUser*/);
     }
 
     @PostMapping

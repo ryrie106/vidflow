@@ -5,16 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
+
 public class Client {
 
     private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
-    private String VIDEO_DIR = "/home/ubuntu/www/videos";
+    private String uploadDir = "C:\\uploads";
 
     @Getter
     private String fileName;
@@ -40,7 +42,7 @@ public class Client {
         this.startedTime = System.currentTimeMillis();
 
         try {
-            this.fos = new FileOutputStream(VIDEO_DIR + "/" + this.fileName + "." + this.extension);
+            this.fos = new FileOutputStream(uploadDir + "\\" + this.fileName + "." + this.extension);
         } catch(IOException e) {
             logger.error("File creation failed");
             e.printStackTrace();

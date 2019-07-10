@@ -21,24 +21,29 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
+    private PostRepository postRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     public Post createPost(PostRequest postRequest) {
         Post post = new Post();
 
-        post.setVideosrc(postRequest.getVideosrc());
+        post.setVideosrc(postRequest.getVideoSrc());
         post.setContent(postRequest.getContent());
         return postRepository.save(post);
     }
 
-    public List<PostResponse> getAllPosts(UserPrincipal currentUser) {
+    /**
+     * Repository에서 post를 찾고 mapPostToPostResponse를 사용하여
+     */
+    public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
 
         Map<Long, User> writerMap = getPostWriterMap(posts);
@@ -51,7 +56,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostResponse getPostById(UserPrincipal currrentUser, Long postId) {
+    public PostResponse getPostById(Long postId) {
         return null;
     }
 
