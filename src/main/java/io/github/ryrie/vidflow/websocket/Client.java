@@ -16,7 +16,6 @@ public class Client {
 
     private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
-//    private String uploadDir = "C:\\uploads";
     private String uploadDir = "/home/ubuntu/www/videos";
 
     @Getter
