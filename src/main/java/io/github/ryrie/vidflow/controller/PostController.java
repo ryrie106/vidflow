@@ -6,7 +6,6 @@ import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
-import io.github.ryrie.vidflow.service.FileStorageService;
 import io.github.ryrie.vidflow.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
