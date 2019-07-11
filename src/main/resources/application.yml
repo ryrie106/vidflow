@@ -11,19 +11,19 @@ spring:
     password: mysqlpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-#server:
-#  port: 8080
-#  ssl:
-#    enabled: true
-#    key-store: /home/ubuntu/key/vidflow.jks
-#    key-store-password: sslpassword
-#    key-password: sslpassword
+server:
+  port: 8080
+  ssl:
+    enabled: true
+    key-store: /home/ubuntu/key/vidflow.jks
+    key-store-password: sslpassword
+    key-password: sslpassword
 
 
 
 file:
-#  upload-dir: /home/ubuntu/www/videos
-  upload-dir: c:\uploads
+  upload-dir: /home/ubuntu/www/videos
+#  upload-dir: c:\uploads
 app:
   jwtSecret: JWTSuperSecretKey
   jwtExpirationInMs: 604800000
