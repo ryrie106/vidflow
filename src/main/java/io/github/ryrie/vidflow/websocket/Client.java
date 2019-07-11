@@ -36,14 +36,14 @@ public class Client {
     private long startedTime;
 
     public Client(Long userId, String extension, long fileSize, long numChunks) {
-        this.fileName = userId.toString() + "_" + generateRandomString(15);
+        this.fileName = userId.toString() + "_" + generateRandomString(15) + "." + extension;
         this.extension = extension;
         this.fileSize = fileSize;
         this.numChunks = numChunks;
         this.startedTime = System.currentTimeMillis();
 
         try {
-            this.fos = new FileOutputStream(uploadDir + "\\" + this.fileName + "." + this.extension);
+            this.fos = new FileOutputStream(uploadDir + "/" + this.fileName + "." + this.extension);
         } catch(IOException e) {
             logger.error("File creation failed");
             e.printStackTrace();
