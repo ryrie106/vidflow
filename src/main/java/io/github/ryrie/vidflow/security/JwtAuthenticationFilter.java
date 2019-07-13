@@ -39,20 +39,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            // request에서 jst 헤더를 가져온다.
+            // request에서 jwt 헤더를 가져온다.
             String jwt = getJwtFromRequest(request);
 
             // jwt 헤더가 존재하고 유효한 헤더이면
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromJWT(jwt);
-
                 // db에서 UserDetails를 가져와
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
                 // 인증 정보를 만들어서
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 // SecurityContext에 등록한다.
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

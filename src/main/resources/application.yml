@@ -19,8 +19,6 @@ server:
     key-store-password: sslpassword
     key-password: sslpassword
 
-
-
 file:
   upload-dir: /home/ubuntu/www/videos
 #  upload-dir: c:\uploads

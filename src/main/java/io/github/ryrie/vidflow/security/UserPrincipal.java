@@ -1,7 +1,6 @@
 package io.github.ryrie.vidflow.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.ryrie.vidflow.domain.RoleName;
 import io.github.ryrie.vidflow.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +20,7 @@ import java.util.stream.Collectors;
 public class UserPrincipal implements UserDetails {
 
     private Long id;
-
     private String email;
-
     private String name;
 
     @JsonIgnore
