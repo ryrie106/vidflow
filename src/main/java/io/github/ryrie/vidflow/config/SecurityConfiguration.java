@@ -91,9 +91,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
