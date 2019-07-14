@@ -42,7 +42,7 @@ public class Client {
         this.startedTime = System.currentTimeMillis();
 
         try {
-            this.fos = new FileOutputStream(uploadDir + "/" + this.fileName + "." + this.extension);
+            this.fos = new FileOutputStream(uploadDir + "/" + this.fileName);
         } catch(IOException e) {
             logger.error("File creation failed");
             e.printStackTrace();
