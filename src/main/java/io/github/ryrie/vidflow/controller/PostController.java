@@ -55,6 +55,6 @@ public class PostController {
     @PreAuthorize("hasRole('USER')")
     ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(new ApiResponse(true, "Post Deleted Successfully"));
     }
 }

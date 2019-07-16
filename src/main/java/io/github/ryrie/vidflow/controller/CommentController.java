@@ -43,6 +43,13 @@ public class CommentController {
                 .body(new ApiResponse(true, "Comment Created Successfully"));
     }
 
+    @DeleteMapping("/{commentId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().body(new ApiResponse(true, "Comment Deleted Successfully"));
+    }
+
 
 
 }

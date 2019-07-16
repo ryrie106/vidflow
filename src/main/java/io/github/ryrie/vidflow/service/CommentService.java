@@ -4,6 +4,7 @@ package io.github.ryrie.vidflow.service;
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.domain.User;
+import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.CommentRequest;
 import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.repository.CommentRepository;
@@ -44,6 +45,11 @@ public class CommentService {
         comment.setContent(commentRequest.getContent());
         comment.setPost(postId);
         return commentRepository.save(comment);
+    }
+
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new AppException("Get Comment Error!"));
+        commentRepository.delete(comment);
     }
 
     private Map<Long, User> getCommentWriterMap(List<Comment> comments) {
