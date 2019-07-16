@@ -53,8 +53,8 @@ public class PostController {
 
     @DeleteMapping(value = "/{postId}")
     @PreAuthorize("hasRole('USER')")
-    ResponseEntity<?> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    ResponseEntity<?> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
         return ResponseEntity.noContent().build();
     }
 }
