@@ -2,6 +2,7 @@ package io.github.ryrie.vidflow.service;
 
 import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.domain.User;
+import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.repository.PostRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -54,6 +56,12 @@ public class PostService {
                     )
                 )
                 .collect(Collectors.toList());
+    }
+
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
+        postRepository.delete(post);
+
     }
 
     public PostResponse getPostById(Long postId) {

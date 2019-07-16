@@ -50,4 +50,11 @@ public class PostController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "Post Created Successfully"));
     }
+
+    @DeleteMapping(value = "/{postId}")
+    @PreAuthorize("hasRole('USER')")
+    ResponseEntity<?> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build();
+    }
 }
