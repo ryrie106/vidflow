@@ -12,6 +12,7 @@ public class Mapper {
         PostResponse postResponse = new PostResponse();
         postResponse.setId(post.getId());
         postResponse.setWritername(writer.getName());
+        postResponse.setWriterid(writer.getId());
         postResponse.setVideosrc(post.getVideosrc());
         postResponse.setContent(post.getContent());
         postResponse.setRegdate(post.getRegdate());
@@ -28,6 +29,7 @@ public class Mapper {
         CommentResponse commentResponse = new CommentResponse();
         commentResponse.setId(comment.getId());
         commentResponse.setWritername(writer.getName());
+        commentResponse.setWriterid(writer.getId());
         commentResponse.setContent(comment.getContent());
         commentResponse.setRegdate(comment.getRegdate());
         commentResponse.setUpdateddate(comment.getUpdatedate());

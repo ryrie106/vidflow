@@ -11,6 +11,7 @@ public class PostResponse {
     private Long id;
 
     private String writername;
+    private Long writerid;
     private String videosrc;
     private String content;
     private Instant regdate;
