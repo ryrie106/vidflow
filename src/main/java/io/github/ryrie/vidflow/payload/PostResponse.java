@@ -14,6 +14,7 @@ public class PostResponse {
     private Long writerid;
     private String videosrc;
     private String content;
+    private Boolean isliked;
     private Instant regdate;
     private Instant updateddate;
 

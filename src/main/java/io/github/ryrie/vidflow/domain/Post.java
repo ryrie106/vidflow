@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,6 +29,9 @@ public class Post {
     private String videosrc;
 
     private String content;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private Set<Like> likes = new HashSet<>();
 
     @CreatedDate
     private Instant regdate;

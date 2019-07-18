@@ -48,16 +48,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        return new JwtAuthenticationFilter();
 //    }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.customUserDetailsService)
-                .passwordEncoder(User.PASSWORD_ENCODER);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(this.customUserDetailsService).passwordEncoder(User.PASSWORD_ENCODER);
+//    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -33,8 +33,8 @@ public class UserPrincipal implements UserDetails {
                 new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
         return new UserPrincipal(
                 user.getId(),
-                user.getName(),
                 user.getEmail(),
+                user.getName(),
                 user.getPassword(),
                 authorities
         );

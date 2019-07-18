@@ -22,11 +22,15 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<CommentResponse> getCommentsByPostId(UserPrincipal currentUser, Long postId) {
         List<Comment> comments = commentRepository.findByPost(postId);

@@ -35,8 +35,8 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getPosts(/*@CurrentUser UserPrincipal currentUser*/) {
-        return postService.getAllPosts(/*currentUser*/);
+    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser) {
+        return postService.getAllPosts(currentUser);
     }
 
     @PostMapping
@@ -55,6 +55,22 @@ public class PostController {
     @PreAuthorize("hasRole('USER')")
     ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
+        // TODO: deletePost에 실패하면?
         return ResponseEntity.ok().body(new ApiResponse(true, "Post Deleted Successfully"));
+    }
+
+    @PostMapping(value = "/like/{postId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
+        postService.likePost(currentUser, postId);
+        return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
+
+    }
+
+    @DeleteMapping(value = "/like/{postId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
+        postService.unlikePost(currentUser, postId);
+        return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 }
