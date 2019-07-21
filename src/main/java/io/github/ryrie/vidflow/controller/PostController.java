@@ -57,6 +57,17 @@ public class PostController {
         postService.deletePost(postId);
         // TODO: deletePost에 실패하면?
         return ResponseEntity.ok().body(new ApiResponse(true, "Post Deleted Successfully"));
+//        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{postId}/like")
+    public ResponseEntity<?> getNumLikesByPostId(@PathVariable Long postId) {
+        return null;
+    }
+
+    @GetMapping(value = "/{postId}/comment")
+    public ResponseEntity<?> getNumCommentsByPostId(@PathVariable Long postId) {
+        return null;
     }
 
     @PostMapping(value = "/like/{postId}")

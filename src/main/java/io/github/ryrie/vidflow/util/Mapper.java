@@ -17,8 +17,13 @@ public class Mapper {
 
         PostResponse postResponse = new PostResponse();
         postResponse.setId(post.getId());
-        postResponse.setWritername(postWriter.getName());
-        postResponse.setWriterid(postWriter.getId());
+        if(postWriter != null) {
+            postResponse.setWritername(postWriter.getName());
+            postResponse.setWriterid(postWriter.getId());
+        } else {
+            postResponse.setWritername("deleted");
+            postResponse.setWriterid(0L);
+        }
         postResponse.setVideosrc(post.getVideosrc());
         postResponse.setContent(post.getContent());
         postResponse.setRegdate(post.getRegdate());
@@ -34,11 +39,17 @@ public class Mapper {
     public static CommentResponse mapCommentToCommentResponse(Comment comment, User postWriter) {
         CommentResponse commentResponse = new CommentResponse();
         commentResponse.setId(comment.getId());
-        commentResponse.setWritername(postWriter.getName());
-        commentResponse.setWriterid(postWriter.getId());
         commentResponse.setContent(comment.getContent());
         commentResponse.setRegdate(comment.getRegdate());
         commentResponse.setUpdateddate(comment.getUpdatedate());
+
+        if(postWriter != null) {
+            commentResponse.setWritername(postWriter.getName());
+            commentResponse.setWriterid(postWriter.getId());
+        } else {
+            commentResponse.setWritername("deleted");
+            commentResponse.setWriterid(0L);
+        }
 
         return commentResponse;
     }

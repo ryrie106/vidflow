@@ -20,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
-//    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id @GeneratedValue
     private Long id;

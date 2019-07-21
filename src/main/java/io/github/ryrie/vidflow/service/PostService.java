@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,13 +57,16 @@ public class PostService {
     public List<PostResponse> getAllPosts(UserPrincipal currentUser) {
         List<Post> posts = postRepository.findAll();
 
-        /*
-            현재 유저의 like 정보를 찾아 like한 post의 id를 리스트로 매핑후 postResponse에 넘겨준다.
-         */
-        User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(() -> new AppException("findByEmail during getAllPosts"));
-        List<Like> likes = likeRepository.findAllByUser(user);
-        List<Long> likePostIds = likes.stream().map(like -> like.getPost().getId()).collect(Collectors.toList());
+        List<Long> likePostIds;
 
+        if(currentUser != null) {
+            // 현재 유저의 like 정보를 찾아 like한 post의 id를 리스트로 매핑후 postResponse에 넘겨준다.
+            User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(() -> new AppException("findByEmail during getAllPosts"));
+            List<Like> likes = likeRepository.findAllByUser(user);
+            likePostIds = likes.stream().map(like -> like.getPost().getId()).collect(Collectors.toList());
+        } else {
+            likePostIds = new ArrayList<>();
+        }
 
         Map<Long, User> writerMap = getPostWriterMap(posts);
         return posts.stream()
