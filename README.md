@@ -16,7 +16,7 @@ Backend : Spring Boot을 비롯한 Spring Framework
 
 API server HOST : AWS EC2 Ubuntu 18.04
 
-Streaming Server : apache2(Http Live Streaming)
+Video Content Server : apache2
 
 DB : AWS RDS(MySQL)
 
@@ -28,5 +28,5 @@ CD : AWS Codedeploy
 
 공부하면서 개발을 진행하였기 때문에 공부한 내용을 정리하고, 프로젝트와 관련지어서 설명하는 방식으로
 문서를 작성하였습니다.
-
+[문서 바로가기](docs/Preface.adoc)
 
