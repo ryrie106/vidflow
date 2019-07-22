@@ -24,7 +24,9 @@ public class Post {
     private Long id;
 
     @CreatedBy
-    private Long writer;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User writer;
 
     private String videosrc;
 
@@ -32,6 +34,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private Set<Like> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
 
     @CreatedDate
     private Instant regdate;

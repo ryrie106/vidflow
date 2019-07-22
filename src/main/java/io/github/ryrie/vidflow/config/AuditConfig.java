@@ -1,5 +1,6 @@
 package io.github.ryrie.vidflow.config;
 
+import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +17,14 @@ import java.util.Optional;
 public class AuditConfig {
 
     @Bean
-    public AuditorAware<Long> auditorProvider() {
+    public AuditorAware<User> auditorProvider() {
         return new SpringSecurityAuditAwareImpl();
     }
 }
 
-class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
+class SpringSecurityAuditAwareImpl implements AuditorAware<User> {
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public Optional<User> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication == null ||
@@ -33,6 +34,6 @@ class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
         }
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return Optional.ofNullable(userPrincipal.getId());
+        return Optional.ofNullable(userPrincipal.getDomain());
     }
 }

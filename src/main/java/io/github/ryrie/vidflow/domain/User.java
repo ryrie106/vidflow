@@ -31,6 +31,12 @@ public class User {
 
     private String password;
 
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
+    private Set<Post> posts = new HashSet<>();
+
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

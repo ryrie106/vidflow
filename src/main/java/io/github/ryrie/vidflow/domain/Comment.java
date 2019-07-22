@@ -22,9 +22,13 @@ public class Comment {
     private Long id;
 
     @CreatedBy
-    private Long writer;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User writer;
 
-    private Long post;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     private String content;
 

@@ -68,15 +68,15 @@ public class PostService {
             likePostIds = new ArrayList<>();
         }
 
-        Map<Long, User> writerMap = getPostWriterMap(posts);
+//        Map<Long, User> writerMap = getPostWriterMap(posts);
         return posts.stream()
                 .map(post ->
                     Mapper.mapPostToPostResponse(
                             post,
                             likePostIds,
                             commentRepository.countByPost(post.getId()),
-                            likeRepository.countByPost(post),
-                            writerMap.get(post.getWriter())
+                            likeRepository.countByPost(post)
+//                            writerMap.get(post.getWriter())
                     )
                 )
                 .collect(Collectors.toList());
@@ -109,15 +109,15 @@ public class PostService {
         return null;
     }
 
-    private Map<Long, User> getPostWriterMap(List<Post> posts) {
-        List<Long> writerIds = posts.stream()
-                .map(Post::getWriter)
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<User> writers = userRepository.findByIdIn(writerIds);
-        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-    }
+//    private Map<Long, User> getPostWriterMap(List<Post> posts) {
+//        List<Long> writerIds = posts.stream()
+//                .map(Post::getWriter)
+//                .distinct()
+//                .collect(Collectors.toList());
+//
+//        List<User> writers = userRepository.findByIdIn(writerIds);
+//        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+//    }
 
 
 

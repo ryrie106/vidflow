@@ -28,15 +28,19 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    private User domain;
+
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
         return new UserPrincipal(
+
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
                 user.getPassword(),
-                authorities
+                authorities,
+                user
         );
     }
 

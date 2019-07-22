@@ -8,6 +8,7 @@ import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.CommentRequest;
 import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.repository.CommentRepository;
+import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
@@ -23,31 +24,35 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private CommentRepository commentRepository;
-
     private UserRepository userRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     public List<CommentResponse> getCommentsByPostId(UserPrincipal currentUser, Long postId) {
         List<Comment> comments = commentRepository.findByPost(postId);
 
-        Map<Long, User> writerMap = getCommentWriterMap(comments);
+//        Map<Long, User> writerMap = getCommentWriterMap(comments);
         return comments.stream()
                 .map(comment ->
-                        Mapper.mapCommentToCommentResponse(comment,
-                                writerMap.get(comment.getWriter())))
+                        Mapper.mapCommentToCommentResponse(comment
+//                                writerMap.get(comment.getWriter())
+                        ))
                 .collect(Collectors.toList());
     }
 
     public Comment createComment(CommentRequest commentRequest, Long postId) {
         Comment comment = new Comment();
+        // comment는 post 값을 찾을수 없으면 에러
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("findById in createComment"));
 
         comment.setContent(commentRequest.getContent());
-        comment.setPost(postId);
+        comment.setPost(post);
         return commentRepository.save(comment);
     }
 
@@ -56,15 +61,15 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private Map<Long, User> getCommentWriterMap(List<Comment> comments) {
-        List<Long> writerIds = comments.stream()
-                .map(Comment::getWriter)
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<User> writers = userRepository.findByIdIn(writerIds);
-        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-    }
+//    private Map<Long, User> getCommentWriterMap(List<Comment> comments) {
+//        List<Long> writerIds = comments.stream()
+//                .map(Comment::getWriter)
+//                .distinct()
+//                .collect(Collectors.toList());
+//
+//        List<User> writers = userRepository.findByIdIn(writerIds);
+//        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+//    }
 
 
 }
