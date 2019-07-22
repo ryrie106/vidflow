@@ -9,7 +9,7 @@ import io.github.ryrie.vidflow.payload.PostResponse;
 import java.util.List;
 
 public class Mapper {
-    public static PostResponse mapPostToPostResponse(Post post, List<Long> likePostIds, Long numComment, Long numLike /*User postWriter*/) {
+    public static PostResponse mapPostToPostResponse(Post post, List<Long> likePostIds, Integer numComment, Long numLike /*User postWriter*/) {
 
         PostResponse postResponse = new PostResponse();
         postResponse.setId(post.getId());
@@ -25,6 +25,7 @@ public class Mapper {
             postResponse.setWritername(post.getWriter().getName());
             postResponse.setWriterid(post.getWriter().getId());
         } else {
+            // 탈퇴된 회원의 경우.
             postResponse.setWritername("deleted");
             postResponse.setWriterid(0L);
         }
@@ -35,7 +36,7 @@ public class Mapper {
         postResponse.setUpdateddate(post.getUpadteddate());
 
         postResponse.setIsliked(likePostIds.contains(post.getId()));
-        postResponse.setNum_comment(numComment);
+        postResponse.setNum_comment(numComment.longValue());
         postResponse.setNum_like(numLike);
 
         return postResponse;
@@ -63,6 +64,7 @@ public class Mapper {
         } else {
             // 탈퇴한 회원인 경우
             commentResponse.setWritername("deleted");
+            commentResponse.setWriterid(0L);
 
         }
 

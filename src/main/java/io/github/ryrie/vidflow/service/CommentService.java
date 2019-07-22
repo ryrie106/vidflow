@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,9 @@ public class CommentService {
     }
 
     public List<CommentResponse> getCommentsByPostId(UserPrincipal currentUser, Long postId) {
-        List<Comment> comments = commentRepository.findByPost(postId);
+        // TODO: 애매한 Optional
+        Optional<Post> post = postRepository.findById(postId);
+        List<Comment> comments = commentRepository.findByPost(post.get());
 
 //        Map<Long, User> writerMap = getCommentWriterMap(comments);
         return comments.stream()
@@ -48,7 +51,7 @@ public class CommentService {
 
     public Comment createComment(CommentRequest commentRequest, Long postId) {
         Comment comment = new Comment();
-        // comment는 post 값을 찾을수 없으면 에러
+        // 존재하지 않는 Post에 댓글을 달 수 없다.
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("findById in createComment"));
 
         comment.setContent(commentRequest.getContent());

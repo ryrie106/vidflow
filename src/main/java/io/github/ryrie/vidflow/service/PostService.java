@@ -74,7 +74,8 @@ public class PostService {
                     Mapper.mapPostToPostResponse(
                             post,
                             likePostIds,
-                            commentRepository.countByPost(post.getId()),
+                            post.getComments().size(),
+//                            commentRepository.countByPost(post.getId()),
                             likeRepository.countByPost(post)
 //                            writerMap.get(post.getWriter())
                     )

@@ -37,6 +37,9 @@ public class User {
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+    private Set<Follow> folloers = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

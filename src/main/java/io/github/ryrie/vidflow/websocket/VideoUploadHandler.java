@@ -76,13 +76,4 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
         }
         session.sendMessage(message);
     }
-
-
-
-//    @Override
-//    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        clients.get(session.getId()).afterConnectionClosed();
-//        clients.remove(session.getId());
-//        System.out.println("WebSocket Session Closed" + session.getId());
-//    }
 }
