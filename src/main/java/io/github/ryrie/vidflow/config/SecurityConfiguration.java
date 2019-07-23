@@ -58,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    // tag::security-configure[]
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -86,10 +87,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.GET, "/posts").permitAll()
                     .antMatchers("/comments/**").permitAll()
                     .antMatchers("/videoUpload/**").permitAll()
+                    .antMatchers("/webstomp/**").permitAll()
                 .anyRequest()
                     .authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
+    // end::security-configure[]
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

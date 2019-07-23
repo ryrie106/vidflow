@@ -10,7 +10,7 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+public class RawWebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {

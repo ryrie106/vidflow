@@ -19,7 +19,7 @@ Spring을 사용한 Web Application에서 Security 설정을 하면 `Servlet Fil
 ./src/main/java/io/github/ryrie/vidflow/config/SecurityConfiguration.java
 [source,java]
 ----
-include::../src/main/java/io/github/ryrie/vidflow/config/SecurityConfiguration.java[lines=62..93]
+include::../src/main/java/io/github/ryrie/vidflow/config/SecurityConfiguration.java[tag=security-configure]
 ----
 
 

@@ -10,6 +10,8 @@ import io.github.ryrie.vidflow.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/posts")
 @RestController
 @Slf4j
 public class PostController {
@@ -29,17 +30,17 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping(value = "/{postId}")
+    @GetMapping(value = "/posts/{postId}")
     public PostResponse getPostById(@PathVariable("postId") Long postId) {
         return postService.getPostById(postId);
     }
 
-    @GetMapping
+    @GetMapping(value = "/posts")
     public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser) {
         return postService.getAllPosts(currentUser);
     }
 
-    @PostMapping
+    @PostMapping(value = "/posts")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest) {
         Post post = postService.createPost(postRequest);
@@ -51,7 +52,7 @@ public class PostController {
                 .body(new ApiResponse(true, "Post Created Successfully"));
     }
 
-    @DeleteMapping(value = "/{postId}")
+    @DeleteMapping(value = "/posts/{postId}")
     @PreAuthorize("hasRole('USER')")
     ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
@@ -60,17 +61,17 @@ public class PostController {
 //        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/{postId}/like")
+    @GetMapping(value = "/posts/{postId}/like")
     public ResponseEntity<?> getNumLikesByPostId(@PathVariable Long postId) {
         return null;
     }
 
-    @GetMapping(value = "/{postId}/comment")
+    @GetMapping(value = "/posts/{postId}/comment")
     public ResponseEntity<?> getNumCommentsByPostId(@PathVariable Long postId) {
         return null;
     }
 
-    @PostMapping(value = "/like/{postId}")
+    @PostMapping(value = "/posts/like/{postId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.likePost(currentUser, postId);
@@ -78,10 +79,12 @@ public class PostController {
 
     }
 
-    @DeleteMapping(value = "/like/{postId}")
+    @DeleteMapping(value = "/posts/like/{postId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.unlikePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
+
+
 }
