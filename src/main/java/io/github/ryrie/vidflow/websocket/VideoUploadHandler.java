@@ -48,6 +48,7 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
         c.pushToFile(message.getPayload().array());
         JSONObject response;
 
+        // TODO: chunk 숫자 세는부분이 맞지 않다 일단 돌아가니까 놔두긴 함.
         // 파일 전송이 끝나면
         if(c.getCurrentChunk() == (c.getNumChunks() + 1)) {
             System.out.println("Elapsed time: " +  (System.currentTimeMillis() - c.getStartedTime() + "ms"));
@@ -63,7 +64,7 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
             }
         } else {
             System.out.println(c.getFileName() + " Transferring..:" + c.getCurrentChunk() + "/" + c.getNumChunks() + " " +
-                    ((float)c.getCurrentChunk() + 1) * 100 / c.getNumChunks() + "% Completed");
+                    ((float)c.getCurrentChunk() + 1) * 100 / c.getNumChunks()+1 + "% Completed");
             try {
                 response = new JSONObject();
                 response.put("type", "PROGRESS_INFO");

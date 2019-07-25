@@ -37,8 +37,8 @@ public class User {
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
-    private Set<Follow> folloers = new HashSet<>();
+    @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
+    private Set<Follow> followers = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -48,6 +48,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Like> likes = new HashSet<>();
+
+    private String introduction = "";
 
     public User(String email, String name, String password) {
         this.name = name;

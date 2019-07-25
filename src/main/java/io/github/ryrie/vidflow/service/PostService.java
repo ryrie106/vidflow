@@ -12,9 +12,13 @@ import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,19 +29,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PostService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
-
-    private CommentRepository commentRepository;
     private PostRepository postRepository;
     private UserRepository userRepository;
     private LikeRepository likeRepository;
 
     @Autowired
-    public PostService(CommentRepository commentRepository, PostRepository postRepository,
+    public PostService(PostRepository postRepository,
                        UserRepository userRepository, LikeRepository likeRepository) {
-        this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.likeRepository = likeRepository;
@@ -51,36 +52,24 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    /**
-     * Repository에서 post를 찾고 mapPostToPostResponse를 사용하여
-     */
-    public List<PostResponse> getAllPosts(UserPrincipal currentUser) {
-        List<Post> posts = postRepository.findAll();
+    public Long getPostId() {
+        return postRepository.getMaxId();
+    }
 
-        List<Long> likePostIds;
+    public PostResponse getPostById(Long postId) {
+//        Post post = postRepository.findById(postId);
+        return null;
+    }
 
-        if(currentUser != null) {
-            // 현재 유저의 like 정보를 찾아 like한 post의 id를 리스트로 매핑후 postResponse에 넘겨준다.
-            User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(() -> new AppException("findByEmail during getAllPosts"));
-            List<Like> likes = likeRepository.findAllByUser(user);
-            likePostIds = likes.stream().map(like -> like.getPost().getId()).collect(Collectors.toList());
-        } else {
-            likePostIds = new ArrayList<>();
-        }
+    public List<PostResponse> getPosts(UserPrincipal currentUser, Long id, Long page) {
+        PageRequest pageRequest = PageRequest.of(page.intValue(), 5, Sort.by("id").descending());
+        Page<Post> posts = postRepository.findByIdLessThanEqual(id, pageRequest);
 
-//        Map<Long, User> writerMap = getPostWriterMap(posts);
-        return posts.stream()
-                .map(post ->
-                    Mapper.mapPostToPostResponse(
-                            post,
-                            likePostIds,
-                            post.getComments().size(),
-//                            commentRepository.countByPost(post.getId()),
-                            likeRepository.countByPost(post)
-//                            writerMap.get(post.getWriter())
-                    )
-                )
-                .collect(Collectors.toList());
+        // TODO: 좀 억지스러운 코드인데 다른 방법이 없을까
+        if(currentUser == null)
+            return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, null)).collect(Collectors.toList());
+
+        return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, currentUser.getDomain())).collect(Collectors.toList());
     }
 
     public void deletePost(Long postId) {
@@ -105,22 +94,5 @@ public class PostService {
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
     }
-
-    public PostResponse getPostById(Long postId) {
-        return null;
-    }
-
-//    private Map<Long, User> getPostWriterMap(List<Post> posts) {
-//        List<Long> writerIds = posts.stream()
-//                .map(Post::getWriter)
-//                .distinct()
-//                .collect(Collectors.toList());
-//
-//        List<User> writers = userRepository.findByIdIn(writerIds);
-//        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-//    }
-
-
-
 
 }

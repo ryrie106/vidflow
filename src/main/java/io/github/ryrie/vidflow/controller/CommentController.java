@@ -22,8 +22,12 @@ import java.util.List;
 @RestController
 public class CommentController {
 
-    @Autowired
     private CommentService commentService;
+
+    @Autowired
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping("/{postId}")
     public List<CommentResponse> getComments(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {

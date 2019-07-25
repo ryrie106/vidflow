@@ -30,14 +30,20 @@ public class PostController {
         this.postService = postService;
     }
 
+    @GetMapping(value="/posts/postId")
+    public ResponseEntity<?> getPostId() {
+        Long pid = postService.getPostId();
+        return ResponseEntity.ok().body(new ApiResponse(true, pid.toString()));
+    }
+
     @GetMapping(value = "/posts/{postId}")
     public PostResponse getPostById(@PathVariable("postId") Long postId) {
         return postService.getPostById(postId);
     }
 
     @GetMapping(value = "/posts")
-    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser) {
-        return postService.getAllPosts(currentUser);
+    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
+        return postService.getPosts(currentUser, id, page);
     }
 
     @PostMapping(value = "/posts")
@@ -85,6 +91,5 @@ public class PostController {
         postService.unlikePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
-
 
 }

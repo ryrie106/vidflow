@@ -3,6 +3,7 @@ package io.github.ryrie.vidflow.controller;
 import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.*;
+import io.github.ryrie.vidflow.repository.FollowRepository;
 import io.github.ryrie.vidflow.repository.RoleRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.CurrentUser;
@@ -29,14 +30,18 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private FollowRepository followRepository;
     private PasswordEncoder passwordEncoder;
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+    public UserController(AuthenticationManager authenticationManager, UserRepository userRepository,
+                          RoleRepository roleRepository, FollowRepository followRepository,
+                          PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.followRepository = followRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
     }
@@ -86,6 +91,31 @@ public class UserController {
     @GetMapping("/me")
     public UserSummary getCurrnetUser(@CurrentUser UserPrincipal currentUser) {
         return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> editUser(@CurrentUser UserPrincipal currentUser) {
+        return null;
+    }
+
+    @PostMapping("/follow/{userId}")
+    public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findbyid error during followUser"));
+        User follower = userRepository.findById(userId).orElseThrow(() -> new AppException("findbyid error during followUser"));
+        Follow follow = new Follow();
+        follow.setUser(user);
+        follow.setFollower(follower);
+        followRepository.save(follow);
+        return ResponseEntity.ok().body(new ApiResponse(true, "Follow user Successfully"));
+    }
+
+    @DeleteMapping("/follow/{userId}")
+    public ResponseEntity<?> unfollowUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findbyid error during unfollowUser"));
+        User follower = userRepository.findById(userId).orElseThrow(() -> new AppException("findbyid error during unfollowUser"));
+        Follow follow = followRepository.findByUserAndFollower(user, follower).orElseThrow(() -> new AppException("findbyuserAndFollow error during unfollowUser"));
+        followRepository.delete(follow);
+        return ResponseEntity.ok().body(new ApiResponse(true, "unFollow user Successfully"));
     }
 
     @GetMapping("/checkNameAvailability")
