@@ -44,7 +44,6 @@ public class Mapper {
                     break;
                 }
             }
-
         }
 
         postResponse.setNum_comment((long) post.getComments().size());

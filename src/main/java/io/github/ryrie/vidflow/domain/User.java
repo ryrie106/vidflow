@@ -51,9 +51,14 @@ public class User {
 
     private String introduction = "";
 
+    private Long num_liked = 0L;
+
+    private Long num_follower = 0L;
+
     public User(String email, String name, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
+
     }
 }

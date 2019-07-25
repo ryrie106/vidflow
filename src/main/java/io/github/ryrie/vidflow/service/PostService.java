@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class PostService {
     }
 
 
+    @Transactional
     public void likePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during likePost"));
@@ -86,13 +88,19 @@ public class PostService {
         like.setPost(post);
         like.setUser(user);
         likeRepository.save(like);
+        User writer = post.getWriter();
+        writer.setNum_liked(writer.getNum_liked()+1);
     }
 
+    @Transactional
     public void unlikePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during unlikePost"));
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
+        User writer = post.getWriter();
+        writer.setNum_liked(writer.getNum_liked()-1);
+
     }
 
 }
