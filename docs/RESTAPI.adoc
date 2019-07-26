@@ -1,15 +1,29 @@
-이 프로젝트는
-
-## 인증 API
+= RestAPI
 
 
-## 게시글 API
+
+== 인증 API
 
 
-## 댓글 API
+== 게시물 API
 
-### GET /comments/{postId}
+=== GET /posts/postId
 
-### POST /comments/{postId}
+가장 최신의 postId를 돌려준다.
 
-댓글을 작성한다.
+=== GET /posts/{postId}
+
+{postId} 게시물을 보내준다.
+
+=== GET /posts?id={postId}&page={page}
+
+{postId} 이전 게시물의 {post}페이지를 보내준다.
+
+== 댓글 API
+
+=== GET /comments/{postId}
+
+
+
+=== POST /comments/{postId}
+

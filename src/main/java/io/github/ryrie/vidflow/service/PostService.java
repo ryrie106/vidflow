@@ -6,6 +6,7 @@ import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
+import io.github.ryrie.vidflow.payload.UserPostsResponse;
 import io.github.ryrie.vidflow.repository.CommentRepository;
 import io.github.ryrie.vidflow.repository.LikeRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
@@ -100,7 +101,28 @@ public class PostService {
         likeRepository.delete(like);
         User writer = post.getWriter();
         writer.setNum_liked(writer.getNum_liked()-1);
+    }
 
+    public List<UserPostsResponse> getUserPosts(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException("findById during getUserPosts"));
+        List<Post> userPosts = user.getPosts();
+        return userPosts.stream().map(post -> {
+            UserPostsResponse response = new UserPostsResponse();
+            response.setPostId(post.getId());
+            response.setThumbnailSrc(post.getThumbnailsrc());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    public List<UserPostsResponse> getUserLikes(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException("findById during getUserLikes"));
+        List<Like> userLikes = user.getLikes();
+        return userLikes.stream().map(like -> {
+            UserPostsResponse response = new UserPostsResponse();
+            response.setPostId(like.getPost().getId());
+            response.setThumbnailSrc(like.getPost().getThumbnailsrc());
+            return response;
+        }).collect(Collectors.toList());
     }
 
 }

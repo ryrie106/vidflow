@@ -32,6 +32,8 @@ public class Post {
 
     private String content;
 
+    private String thumbnailsrc = "";
+
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private Set<Like> likes = new HashSet<>();
 

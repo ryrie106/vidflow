@@ -4,6 +4,7 @@ import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.payload.ApiResponse;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
+import io.github.ryrie.vidflow.payload.UserPostsResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.PostService;
@@ -82,7 +83,16 @@ public class PostController {
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.likePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
+    }
 
+    @GetMapping(value = "/posts/user/{userId}")
+    public List<UserPostsResponse> getUserPosts(@PathVariable Long userId) {
+        return postService.getUserPosts(userId);
+    }
+
+    @GetMapping(value = "/posts/likes/{userId}")
+    public List<UserPostsResponse> getUserLikes(@PathVariable Long userId) {
+        return postService.getUserLikes(userId);
     }
 
     @DeleteMapping(value = "/posts/like/{postId}")
