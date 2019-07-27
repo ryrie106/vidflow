@@ -4,15 +4,13 @@ import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.payload.ApiResponse;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
-import io.github.ryrie.vidflow.payload.UserPostsResponse;
+import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,8 +36,8 @@ public class PostController {
     }
 
     @GetMapping(value = "/posts/{postId}")
-    public PostResponse getPostById(@PathVariable("postId") Long postId) {
-        return postService.getPostById(postId);
+    public PostResponse getPostById(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {
+        return postService.getPostById(currentUser, postId);
     }
 
     @GetMapping(value = "/posts")
@@ -68,16 +66,6 @@ public class PostController {
 //        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/posts/{postId}/like")
-    public ResponseEntity<?> getNumLikesByPostId(@PathVariable Long postId) {
-        return null;
-    }
-
-    @GetMapping(value = "/posts/{postId}/comment")
-    public ResponseEntity<?> getNumCommentsByPostId(@PathVariable Long postId) {
-        return null;
-    }
-
     @PostMapping(value = "/posts/like/{postId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
@@ -86,12 +74,12 @@ public class PostController {
     }
 
     @GetMapping(value = "/posts/user/{userId}")
-    public List<UserPostsResponse> getUserPosts(@PathVariable Long userId) {
+    public List<QueryPostsResponse> getUserPosts(@PathVariable Long userId) {
         return postService.getUserPosts(userId);
     }
 
     @GetMapping(value = "/posts/likes/{userId}")
-    public List<UserPostsResponse> getUserLikes(@PathVariable Long userId) {
+    public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
         return postService.getUserLikes(userId);
     }
 
@@ -100,6 +88,11 @@ public class PostController {
     public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.unlikePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
+    }
+
+    @GetMapping(value = "/posts/query")
+    public List<QueryPostsResponse> queryPostContent(@RequestParam("content") String content) {
+        return postService.queryPostContent(content);
     }
 
 }

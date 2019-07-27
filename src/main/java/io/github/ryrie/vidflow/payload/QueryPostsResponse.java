@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserPostsResponse {
+public class QueryPostsResponse {
 
     private Long postId;
     private String thumbnailSrc;

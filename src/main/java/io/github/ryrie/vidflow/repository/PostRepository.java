@@ -18,4 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findByIdLessThanEqual(Long id, Pageable pageable);
 
+    List<Post> findByContentContaining(String content);
+
 }
