@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RequestMapping("/user")
 @RestController
@@ -90,4 +91,9 @@ public class UserController {
         Boolean isAvailable = !userRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
     }
+
+    @GetMapping("/query")
+    public List<QueryUserResponse> queryUsersName(@RequestParam("name") String name) {
+        return userService.queryUserName(name);
+}
 }

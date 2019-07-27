@@ -6,6 +6,7 @@ import io.github.ryrie.vidflow.domain.RoleName;
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.ApiResponse;
+import io.github.ryrie.vidflow.payload.QueryUserResponse;
 import io.github.ryrie.vidflow.payload.SignUpRequest;
 import io.github.ryrie.vidflow.payload.UserInfoResponse;
 import io.github.ryrie.vidflow.repository.FollowRepository;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -93,6 +96,15 @@ public class UserService {
         follower.setNum_follower(follower.getNum_follower()-1);
     }
 
-
-
+    public List<QueryUserResponse> queryUserName(String name) {
+        List<User> users = userRepository.findByNameContaining(name);
+        return users.stream().map(user -> {
+            QueryUserResponse response = new QueryUserResponse();
+            response.setId(user.getId());
+            response.setName(user.getName());
+            response.setThumbnailSrc("");
+            response.setIntroduction(user.getIntroduction());
+            return response;
+        }).collect(Collectors.toList());
+    }
 }

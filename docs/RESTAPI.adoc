@@ -20,7 +20,6 @@ Spring Data REST를 사용하면 Object를 Mapping 하는 동시에 HTTP 메소�
 
 - GET에 Body를 넣어도 될까?
 
-
 == 인증 관련
 
 == 게시물 관련
