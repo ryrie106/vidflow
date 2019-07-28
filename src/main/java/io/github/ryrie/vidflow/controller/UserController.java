@@ -1,5 +1,6 @@
 package io.github.ryrie.vidflow.controller;
 
+import io.github.ryrie.vidflow.domain.Notification;
 import io.github.ryrie.vidflow.payload.*;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.CurrentUser;
@@ -56,6 +57,11 @@ public class UserController {
     @GetMapping("/info/{userId}")
     public UserInfoResponse getUserInfo(@PathVariable Long userId) {
         return userService.getUserInfo(userId);
+    }
+
+    @GetMapping("/notification/{userId}")
+    public List<NotificationResponse> getNotifications(@PathVariable Long userId) {
+        return userService.getNotifications(userId);
     }
 
     @GetMapping("/me")

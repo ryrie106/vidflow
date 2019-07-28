@@ -1,13 +1,12 @@
 package io.github.ryrie.vidflow.service;
 
-import io.github.ryrie.vidflow.domain.Like;
-import io.github.ryrie.vidflow.domain.Post;
-import io.github.ryrie.vidflow.domain.User;
+import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.repository.LikeRepository;
+import io.github.ryrie.vidflow.repository.NotificationRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
@@ -30,13 +29,14 @@ public class PostService {
     private PostRepository postRepository;
     private UserRepository userRepository;
     private LikeRepository likeRepository;
+    private NotificationRepository notificationRepository;
 
-    @Autowired
-    public PostService(PostRepository postRepository,
-                       UserRepository userRepository, LikeRepository likeRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository,
+                       LikeRepository likeRepository, NotificationRepository notificationRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.likeRepository = likeRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public Post createPost(PostRequest postRequest) {
@@ -77,7 +77,6 @@ public class PostService {
 
     }
 
-
     @Transactional
     public void likePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
@@ -88,6 +87,12 @@ public class PostService {
         likeRepository.save(like);
         User writer = post.getWriter();
         writer.setNum_liked(writer.getNum_liked()+1);
+        Notification notification = new Notification();
+        notification.setCategory(NotificationCategory.LIKE);
+        notification.setUser(writer);
+        notification.setFromuser(user);
+        notification.setLink("/user/"+user.getId());
+        notificationRepository.save(notification);
     }
 
     @Transactional

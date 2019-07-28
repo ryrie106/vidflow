@@ -51,6 +51,13 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Notification> notifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromuser", fetch = FetchType.LAZY)
+    private List<Notification> notifications_fromuser = new ArrayList<>();
+
+
     private String introduction = "";
 
     private Long num_liked = 0L;

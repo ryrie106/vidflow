@@ -1,14 +1,8 @@
 package io.github.ryrie.vidflow.service;
 
-import io.github.ryrie.vidflow.domain.Follow;
-import io.github.ryrie.vidflow.domain.Role;
-import io.github.ryrie.vidflow.domain.RoleName;
-import io.github.ryrie.vidflow.domain.User;
+import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.exception.AppException;
-import io.github.ryrie.vidflow.payload.ApiResponse;
-import io.github.ryrie.vidflow.payload.QueryUserResponse;
-import io.github.ryrie.vidflow.payload.SignUpRequest;
-import io.github.ryrie.vidflow.payload.UserInfoResponse;
+import io.github.ryrie.vidflow.payload.*;
 import io.github.ryrie.vidflow.repository.FollowRepository;
 import io.github.ryrie.vidflow.repository.RoleRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
@@ -104,6 +98,19 @@ public class UserService {
             response.setName(user.getName());
             response.setThumbnailSrc("");
             response.setIntroduction(user.getIntroduction());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    public List<NotificationResponse> getNotifications(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException("findByid during getNotifications"));
+
+        return user.getNotifications().stream().map(notification -> {
+            NotificationResponse response = new NotificationResponse();
+            response.setCategory(notification.getCategory().toString());
+            response.setLink(notification.getLink());
+            response.setUsername(notification.getUser().getName());
+            response.setId(notification.getId());
             return response;
         }).collect(Collectors.toList());
     }
