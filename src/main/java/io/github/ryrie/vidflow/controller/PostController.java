@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -50,9 +51,9 @@ public class PostController {
 
     @PostMapping(value = "/posts")
     @PreAuthorize("hasRole('USER')")
+    @Transactional
     public ResponseEntity<?> createPost(@CurrentUser UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
         Post post = postService.createPost(currentUser, postRequest);
-
         notificationService.newPostNotify(currentUser, post.getId());
 
         URI location = ServletUriComponentsBuilder
@@ -75,7 +76,8 @@ public class PostController {
     @PostMapping(value = "/posts/like/{postId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
-        postService.likePost(currentUser, postId);
+        Post post = postService.likePost(currentUser, postId);
+        notificationService.likePostNotify(currentUser, post);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 

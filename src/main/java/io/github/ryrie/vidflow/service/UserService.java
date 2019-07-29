@@ -66,17 +66,16 @@ public class UserService {
         return userInfoResponse;
     }
 
-    @Transactional
-    public void followUser(UserPrincipal currentUser, Long userId) {
+    public User followUser(UserPrincipal currentUser, Long userId) {
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findbyid error during followUser"));
         User follower = userRepository.findById(userId).orElseThrow(() -> new AppException("findbyid error during followUser"));
         Follow follow = new Follow();
         follow.setUser(user);
         follow.setFollower(follower);
         followRepository.save(follow);
+        return follower;
     }
 
-    @Transactional
     public void unfollowUser(UserPrincipal currentUser, Long userId) {
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findbyid error during unfollowUser"));
         User follower = userRepository.findById(userId).orElseThrow(() -> new AppException("findbyid error during unfollowUser"));
@@ -86,7 +85,7 @@ public class UserService {
 
     public boolean isFollowing(Long following, Long follower) {
         User user = userRepository.findById(following).orElse(new User());
-        for(Follow f : user.getFollowers()) {
+        for(Follow f : user.getFollowing()) {
             if(f.getFollower().getId().equals(follower)) {
                 return true;
             }
@@ -108,8 +107,11 @@ public class UserService {
 
     public List<NotificationResponse> getNotifications(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException("findByid during getNotifications"));
+        List<Notification> notifications = user.getNotifications();
+        // 최신의 알림이 맨 위에 오도록
+        Collections.reverse(notifications);
 
-        return user.getNotifications().stream().map(notification -> {
+        return notifications.stream().map(notification -> {
             NotificationResponse response = new NotificationResponse();
             response.setCategory(notification.getCategory().toString());
             response.setLink(notification.getLink());

@@ -14,6 +14,7 @@ import io.github.ryrie.vidflow.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,6 +37,9 @@ public class CommentService {
         // TODO: 애매한 Optional
         Optional<Post> post = postRepository.findById(postId);
         List<Comment> comments = commentRepository.findByPost(post.get());
+
+        // 최신의 댓글이 제일 먼저 보이도록
+        Collections.reverse(comments);
 
         return comments.stream().map(Mapper::mapCommentToCommentResponse).collect(Collectors.toList());
     }

@@ -29,14 +29,12 @@ public class PostService {
     private PostRepository postRepository;
     private UserRepository userRepository;
     private LikeRepository likeRepository;
-    private NotificationRepository notificationRepository;
 
     public PostService(PostRepository postRepository, UserRepository userRepository,
-                       LikeRepository likeRepository, NotificationRepository notificationRepository) {
+                       LikeRepository likeRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.likeRepository = likeRepository;
-        this.notificationRepository = notificationRepository;
     }
 
     @Transactional
@@ -78,21 +76,17 @@ public class PostService {
     }
 
     @Transactional
-    public void likePost(UserPrincipal currentUser, Long postId) {
+    public Post likePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
-        User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during likePost"));
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findById during likePost"));
         Like like = new Like();
         like.setPost(post);
         like.setUser(user);
         likeRepository.save(like);
         User writer = post.getWriter();
+        // TODO: 경쟁조건이 될 수 있을까
         writer.setNum_liked(writer.getNum_liked()+1);
-        Notification notification = new Notification();
-        notification.setCategory(NotificationCategory.LIKE);
-        notification.setUser(writer);
-        notification.setFromuser(user);
-        notification.setLink("/user/"+user.getId());
-        notificationRepository.save(notification);
+        return post;
     }
 
     @Transactional
@@ -102,7 +96,9 @@ public class PostService {
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
         User writer = post.getWriter();
+        // TODO: 경쟁조건이 될 수 있을까?
         writer.setNum_liked(writer.getNum_liked()-1);
+//        return post;
     }
 
     public List<QueryPostsResponse> getUserPosts(Long userId) {

@@ -1,17 +1,20 @@
 package io.github.ryrie.vidflow.controller;
 
 import io.github.ryrie.vidflow.domain.Notification;
+import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.payload.*;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.JwtTokenProvider;
 import io.github.ryrie.vidflow.security.UserPrincipal;
+import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,13 +28,16 @@ public class UserController {
     private UserService userService;
     private UserRepository userRepository;
     private JwtTokenProvider tokenProvider;
+    private NotificationService notificationService;
 
     public UserController(AuthenticationManager authenticationManager, UserService userService,
-                          UserRepository userRepository, JwtTokenProvider tokenProvider) {
+                          UserRepository userRepository, JwtTokenProvider tokenProvider,
+                          NotificationService notificationService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/login")
@@ -75,8 +81,10 @@ public class UserController {
     }
 
     @PostMapping("/follow/{userId}")
+    @Transactional
     public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
-        userService.followUser(currentUser, userId);
+        User follower = userService.followUser(currentUser, userId);
+        notificationService.followNotify(currentUser, follower);
         return ResponseEntity.ok().body(new ApiResponse(true, "Follow user Successfully"));
     }
 

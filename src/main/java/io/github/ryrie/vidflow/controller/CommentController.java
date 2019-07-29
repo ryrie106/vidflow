@@ -1,6 +1,5 @@
 package io.github.ryrie.vidflow.controller;
 
-
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.payload.ApiResponse;
 import io.github.ryrie.vidflow.payload.CommentRequest;
@@ -8,10 +7,11 @@ import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.CommentService;
-import io.github.ryrie.vidflow.service.PostService;
+import io.github.ryrie.vidflow.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,10 +23,12 @@ import java.util.List;
 public class CommentController {
 
     private CommentService commentService;
+    private NotificationService notificationService;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, NotificationService notificationService) {
         this.commentService = commentService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/{postId}")
@@ -36,9 +38,12 @@ public class CommentController {
 
     @PostMapping("/{postId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest,
+    @Transactional
+    public ResponseEntity<?> createComment(@CurrentUser UserPrincipal currentUser,
+                                           @RequestBody CommentRequest commentRequest,
                                            @PathVariable("postId") Long postId) {
         Comment comment = commentService.createComment(commentRequest, postId);
+        notificationService.commentNotify(currentUser, comment);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{commentId}")
                 .buildAndExpand(comment.getId()).toUri();

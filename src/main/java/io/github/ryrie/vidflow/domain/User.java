@@ -39,9 +39,13 @@ public class User {
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
+    // 자신이 팔로우 하고 있는 유저를 매핑
+    // 사용 예: user.getFollowing().getFollower();
     @OneToMany(mappedBy = "user", fetch= FetchType.EAGER)
     private Set<Follow> following = new HashSet<>();
 
+    // 자신을 팔로우 하고 있는 유저를 매핑
+    // 사용 예 : user.getFollowers().getUser();
     @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     private Set<Follow> followers = new HashSet<>();
 
