@@ -8,8 +8,6 @@ import io.github.ryrie.vidflow.repository.RoleRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +60,8 @@ public class UserService {
         userInfoResponse.setIntroduction(user.getIntroduction());
 
         userInfoResponse.setNumLikes(user.getNum_liked());
-        userInfoResponse.setNumFollowing((long) user.getFollowers().size());
-        userInfoResponse.setNumFollower(user.getNum_follower());
+        userInfoResponse.setNumFollowing((long) user.getFollowing().size());
+        userInfoResponse.setNumFollower((long) user.getFollowers().size());
 
         return userInfoResponse;
     }
@@ -76,8 +74,6 @@ public class UserService {
         follow.setUser(user);
         follow.setFollower(follower);
         followRepository.save(follow);
-        // TODO: 경쟁조건이 있을까
-        follower.setNum_follower(follower.getNum_follower()+1);
     }
 
     @Transactional
@@ -86,8 +82,16 @@ public class UserService {
         User follower = userRepository.findById(userId).orElseThrow(() -> new AppException("findbyid error during unfollowUser"));
         Follow follow = followRepository.findByUserAndFollower(user, follower).orElseThrow(() -> new AppException("findbyuserAndFollow error during unfollowUser"));
         followRepository.delete(follow);
-        // TODO: 경쟁조건이 있을까
-        follower.setNum_follower(follower.getNum_follower()-1);
+    }
+
+    public boolean isFollowing(Long following, Long follower) {
+        User user = userRepository.findById(following).orElse(new User());
+        for(Follow f : user.getFollowers()) {
+            if(f.getFollower().getId().equals(follower)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<QueryUserResponse> queryUserName(String name) {
@@ -109,7 +113,7 @@ public class UserService {
             NotificationResponse response = new NotificationResponse();
             response.setCategory(notification.getCategory().toString());
             response.setLink(notification.getLink());
-            response.setUsername(notification.getUser().getName());
+            response.setFromname(notification.getFromuser().getName());
             response.setId(notification.getId());
             return response;
         }).collect(Collectors.toList());

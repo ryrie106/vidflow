@@ -39,9 +39,9 @@ public class PostService {
         this.notificationRepository = notificationRepository;
     }
 
-    public Post createPost(PostRequest postRequest) {
+    @Transactional
+    public Post createPost(UserPrincipal currentUser, PostRequest postRequest) {
         Post post = new Post();
-
         post.setVideosrc(postRequest.getVideoSrc());
         post.setContent(postRequest.getContent());
         return postRepository.save(post);

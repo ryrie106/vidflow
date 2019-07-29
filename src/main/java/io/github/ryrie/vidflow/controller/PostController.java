@@ -7,6 +7,7 @@ import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
+import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ import java.util.List;
 public class PostController {
 
     private PostService postService;
+    private NotificationService notificationService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, NotificationService notificationService) {
         this.postService = postService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping(value="/posts/postId")
@@ -47,8 +50,11 @@ public class PostController {
 
     @PostMapping(value = "/posts")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest) {
-        Post post = postService.createPost(postRequest);
+    public ResponseEntity<?> createPost(@CurrentUser UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
+        Post post = postService.createPost(currentUser, postRequest);
+
+        notificationService.newPostNotify(currentUser, post.getId());
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{postId}")
                 .buildAndExpand(post.getId()).toUri();

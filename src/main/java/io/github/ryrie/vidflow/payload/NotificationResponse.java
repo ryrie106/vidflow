@@ -11,5 +11,5 @@ public class NotificationResponse {
     private Long id;
     private String link;
     private String category;
-    private String username;
+    private String fromname;
 }

@@ -15,13 +15,12 @@ public class Notification {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreatedBy
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_fromid")
     private User fromuser;
 
     @Enumerated(EnumType.STRING)

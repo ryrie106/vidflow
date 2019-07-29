@@ -101,5 +101,10 @@ public class UserController {
     @GetMapping("/query")
     public List<QueryUserResponse> queryUsersName(@RequestParam("name") String name) {
         return userService.queryUserName(name);
-}
+    }
+
+    @GetMapping("/following")
+    public boolean isFollowing(@RequestParam("from") Long from, @RequestParam("to") Long to) {
+        return userService.isFollowing(from, to);
+    }
 }

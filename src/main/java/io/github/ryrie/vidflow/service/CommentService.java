@@ -1,6 +1,5 @@
 package io.github.ryrie.vidflow.service;
 
-
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.domain.User;
@@ -25,13 +24,11 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private CommentRepository commentRepository;
-    private UserRepository userRepository;
     private PostRepository postRepository;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
         this.postRepository = postRepository;
     }
 
@@ -40,13 +37,7 @@ public class CommentService {
         Optional<Post> post = postRepository.findById(postId);
         List<Comment> comments = commentRepository.findByPost(post.get());
 
-//        Map<Long, User> writerMap = getCommentWriterMap(comments);
-        return comments.stream()
-                .map(comment ->
-                        Mapper.mapCommentToCommentResponse(comment
-//                                writerMap.get(comment.getWriter())
-                        ))
-                .collect(Collectors.toList());
+        return comments.stream().map(Mapper::mapCommentToCommentResponse).collect(Collectors.toList());
     }
 
     public Comment createComment(CommentRequest commentRequest, Long postId) {
@@ -63,16 +54,4 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new AppException("Get Comment Error!"));
         commentRepository.delete(comment);
     }
-
-//    private Map<Long, User> getCommentWriterMap(List<Comment> comments) {
-//        List<Long> writerIds = comments.stream()
-//                .map(Comment::getWriter)
-//                .distinct()
-//                .collect(Collectors.toList());
-//
-//        List<User> writers = userRepository.findByIdIn(writerIds);
-//        return writers.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-//    }
-
-
 }

@@ -39,6 +39,9 @@ public class User {
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch= FetchType.EAGER)
+    private Set<Follow> following = new HashSet<>();
+
     @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     private Set<Follow> followers = new HashSet<>();
 
@@ -57,12 +60,9 @@ public class User {
     @OneToMany(mappedBy = "fromuser", fetch = FetchType.LAZY)
     private List<Notification> notifications_fromuser = new ArrayList<>();
 
-
     private String introduction = "";
 
     private Long num_liked = 0L;
-
-    private Long num_follower = 0L;
 
     public User(String email, String name, String password) {
         this.name = name;
