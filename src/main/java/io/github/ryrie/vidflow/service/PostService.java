@@ -59,7 +59,7 @@ public class PostService {
     }
 
     public List<PostResponse> getPosts(UserPrincipal currentUser, Long id, Long page) {
-        PageRequest pageRequest = PageRequest.of(page.intValue(), 5, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page.intValue(), 3, Sort.by("id").descending());
         Page<Post> posts = postRepository.findByIdLessThanEqual(id, pageRequest);
 
         // TODO: 마음에 안드는데 다른 방법이 없을까
