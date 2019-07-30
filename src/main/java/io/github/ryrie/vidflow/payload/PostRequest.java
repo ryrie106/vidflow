@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class PostRequest {
 
-    private String thumbnailsrc;
+    private String thumbnailSrc;
     private String videoSrc;
     private String content;
 }

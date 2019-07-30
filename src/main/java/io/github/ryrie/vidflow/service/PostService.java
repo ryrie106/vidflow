@@ -40,7 +40,7 @@ public class PostService {
     @Transactional
     public Post createPost(UserPrincipal currentUser, PostRequest postRequest) {
         Post post = new Post();
-        post.setThumbnailsrc(postRequest.getThumbnailsrc());
+        post.setThumbnailsrc(postRequest.getThumbnailSrc());
         post.setVideosrc(postRequest.getVideoSrc());
         post.setContent(postRequest.getContent());
         return postRepository.save(post);
