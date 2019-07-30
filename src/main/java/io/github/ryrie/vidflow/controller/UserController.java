@@ -1,6 +1,5 @@
 package io.github.ryrie.vidflow.controller;
 
-import io.github.ryrie.vidflow.domain.Notification;
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.payload.*;
 import io.github.ryrie.vidflow.repository.UserRepository;

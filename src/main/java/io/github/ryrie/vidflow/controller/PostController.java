@@ -81,6 +81,7 @@ public class PostController {
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 
+
     @GetMapping(value = "/posts/user/{userId}")
     public List<QueryPostsResponse> getUserPosts(@PathVariable Long userId) {
         return postService.getUserPosts(userId);

@@ -4,8 +4,6 @@ import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.payload.PostResponse;
 
-import java.util.List;
-
 public class Mapper {
     public static PostResponse mapPostToPostResponse(Post post, User currentUser) {
 
@@ -25,22 +23,14 @@ public class Mapper {
         postResponse.setContent(post.getContent());
         postResponse.setUpdateddate(post.getUpadteddate());
         postResponse.setRegdate(post.getRegdate());
-
         postResponse.setIsliked(false);
         postResponse.setIsfollowed(false);
 
         if(currentUser != null) {
-            // 로그인한 경우 좋아요와 팔로우 여부 확인
+            // 로그인한 경우 좋아요 여부 확인
             for (Like like : post.getLikes()) {
-                if(currentUser.getId().equals(like.getId())) {
+                if(currentUser.getId().equals(like.getUser().getId())) {
                     postResponse.setIsliked(true);
-                    break;
-                }
-            }
-            // 이 문장 때문에 User의 follower를 FetchType.EAGER로 바꿔야 했다.
-            for(Follow follow : currentUser.getFollowers()) {
-                if(post.getWriter().getId().equals(follow.getFollower().getId())) {
-                    postResponse.setIsfollowed(true);
                     break;
                 }
             }
