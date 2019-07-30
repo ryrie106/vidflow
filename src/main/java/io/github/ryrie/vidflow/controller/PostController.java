@@ -33,6 +33,7 @@ public class PostController {
         this.notificationService = notificationService;
     }
 
+
     @GetMapping(value="/posts/postId")
     public ResponseEntity<?> getPostId() {
         Long pid = postService.getPostId();
