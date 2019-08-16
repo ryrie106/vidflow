@@ -1,18 +1,25 @@
-package io.github.ryrie.vidflow.websocket;
+package io.github.ryrie.vidflow.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class VideoUploadHandler extends AbstractWebSocketHandler {
+@Slf4j
+@Component
+public class WebSocketHandler extends AbstractWebSocketHandler {
 
-    private Map<String, Client> clients = new HashMap<>();
+    private Map<Long, FileUploadClient> clients;
+
+    public WebSocketHandler(Map<Long, FileUploadClient> clients) {
+        this.clients = clients;
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -21,16 +28,13 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
             JSONObject obj = new JSONObject(message.getPayload());
             JSONObject response;
             switch(obj.getString("type")) {
-
-                case "VIDEOFILE_INFO":
-                    clients.put(session.getId(),
-                            new Client(obj.getLong("userid"),
+                case "info":
+                    clients.put(Long.parseLong(session.getId()),
+                            new FileUploadClient(obj.getLong("uid"),
                                     obj.getString("extension"),
-                                    obj.getLong("fileSize"),
                                     obj.getLong("numChunks")));
                     response = new JSONObject();
-                    response.put("type", "TRANSFER_START");
-                    System.out.println("Transfer Start from : " + session.getId() + "/" + obj.getLong("userid"));
+                    response.put("type", "start");
                     session.sendMessage(new TextMessage(response.toString()));
                     break;
                 default:
@@ -41,33 +45,31 @@ public class VideoUploadHandler extends AbstractWebSocketHandler {
         }
     }
 
-
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
-        Client c = clients.get(session.getId());
+        Long uid = Long.parseLong(session.getId());
+        FileUploadClient c = clients.get(uid);
         c.pushToFile(message.getPayload().array());
         JSONObject response;
 
-        // TODO: chunk 숫자 세는부분이 맞지 않다 일단 돌아가니까 놔두긴 함.
         // 파일 전송이 끝나면
         if(c.getCurrentChunk() == (c.getNumChunks() + 1)) {
-            System.out.println("Elapsed time: " +  (System.currentTimeMillis() - c.getStartedTime() + "ms"));
+            log.info("File: " + c.getFileName() + " Upload Complete");
             try {
                 response = new JSONObject();
-                response.put("type", "TRANSFER_COMPLETE");
+                response.put("type", "complete");
                 response.put("fileName", c.getFileName());
                 c.afterTransferComplete(); // fileOutputStream을 닫는다.
                 session.sendMessage(new TextMessage(response.toString()));
-                clients.remove(session.getId());
+                clients.remove(uid);
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
         } else {
-            System.out.println(c.getFileName() + " Transferring..:" + c.getCurrentChunk() + "/" + c.getNumChunks() + " " +
-                    ((float)c.getCurrentChunk() + 1) * 100 / c.getNumChunks()+1 + "% Completed");
+            log.info("File: " + c.getFileName() +" " + c.getCurrentChunk() + "/" + c.getNumChunks() + " Uploaded");
             try {
                 response = new JSONObject();
-                response.put("type", "PROGRESS_INFO");
+                response.put("type", "uploading");
                 response.put("currentChunk", c.getCurrentChunk());
                 c.setCurrentChunk(c.getCurrentChunk()+1);
                 session.sendMessage(new TextMessage(response.toString()));
