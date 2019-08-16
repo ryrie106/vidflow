@@ -1,6 +1,5 @@
 package io.github.ryrie.vidflow.config;
 
-import io.github.ryrie.vidflow.websocket.Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -22,10 +21,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE", "")
                 .maxAge(MAX_AGE_SECS);
-    }
-
-    @Bean
-    public Map<Long, Client> client() {
-        return new HashMap<>();
     }
 }
