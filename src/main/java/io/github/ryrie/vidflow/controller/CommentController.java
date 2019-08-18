@@ -52,9 +52,11 @@ public class CommentController {
                 .body(new ApiResponse(true, "Comment Created Successfully"));
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/{postId}/{commentId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+    public ResponseEntity<?> deleteComment(@CurrentUser UserPrincipal currentUser,
+                                           @PathVariable("postId") Long postId,
+                                           @PathVariable Long commentId) {
         commentService.deleteComment(commentId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Comment Deleted Successfully"));
     }

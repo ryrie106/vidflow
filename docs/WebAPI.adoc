@@ -1,0 +1,94 @@
+= WebAPI
+
+이 프로젝트는 React.js SPA + Web API Backend 형태의 아키텍처를 사용한다. 요즘 대부분의 웹 서비스에서 사용되는 여러가지 장점이 있다.
+내가 생각하는 장점들은 다음과 같다.
+
+- 여러 가지 프론트엔드에(웹 페이지, 스마트폰 애플리케이션 등등) 공통적으로 사용할 수 있다.
+-
+
+
+
+REST(Representational Style Transfer)은 Web Service의 Architecture Style이다. 처음에 오해할 만한 부분이 REST는 표준이 아니고
+스타일이다. 따라서 절대적인 규칙은 없지만, 몇가지 권장하는 원칙이 있으며 그것을 얼마나 잘 적용 하였느냐에 따라
+서비스가 `RESTful` 하게 되는 것이다. 마치 몇가지 객체지향 원칙을 가지고 설계 방법에 따라서
+해당 프로그램이 객체지향스럽게 되는 것과 같다.
+
+Restful Web Service에서는 모든 리소스가 URI를 가지며 URI로의 어떤 요청을 하면 응답의 Payload가 XML, JSON 등으로 변환되어 반환된다.
+그리고 그 응답은 저장된 resource가 재대로 저장/변경 되었는지에 대한 확인이며, 응답에는 다른 리소스로 갈 수 있는 `HyperLink` 를 제공한다.
+
+
+
+== 메소드를 설계하면서 고민한 점
+
+== 인증 관련
+
+=== POST /auth/login
+
+이메일, 비밀번호를 사용하여 로그인한다.
+
+== 사용자 관련
+
+=== POST /users
+
+새로운 사용자를 생성한다.
+
+=== GET /users/{userId}
+
+userId에 해당하는 사용자의 정보를 돌려준다.
+
+=== PUT /users/{userId}
+
+userId에 해당하는 사용자의 정보를 수정한다.
+
+=== GET /users/{userId}/notification
+
+userId에 해당하는 사용자의 알림 정보를 돌려준다.
+
+=== POST /users/{userId}/follow
+
+userId의 사용자를 팔로우한다.
+
+=== DELETE /users/{userId}/follow
+
+userId의 사용자에게의 팔로우를 해제한다.
+
+=== GET /users/{userId}/posts
+
+userId의 사용자가 작성한 글들을 돌려준다.
+
+=== GET /users/{userId}/likes
+
+userId의 사용자가 좋아요를 표시한 글들을 돌려준다.
+
+== 게시물 관련
+
+=== POST /posts
+
+새로운 게시물을 작성한다.
+
+=== GET /posts?id={postId}&page={page}
+
+{postId} 이전 게시물의 {post}페이지를 보내준다.
+
+=== GET /posts/postId
+
+가장 최신의 postId를 돌려준다.
+
+=== GET /posts/{postId}
+
+{postId} 게시물을 보내준다.
+
+=== POST /posts/{postId}/like
+
+postId 게시물에 좋아요 표시 한다.
+
+=== DELETE /posts/{postId}/like
+
+postId 게시물에 좋아요 표시를 해제한다.
+
+== 댓글 관련
+
+=== GET /comments/{postId}
+
+=== POST /comments/{postId}
+

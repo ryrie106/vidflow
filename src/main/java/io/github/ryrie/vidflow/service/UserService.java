@@ -82,8 +82,8 @@ public class UserService {
         followRepository.delete(follow);
     }
 
-    public boolean isFollowing(Long following, Long follower) {
-        User user = userRepository.findById(following).orElse(new User());
+    public boolean isFollowing(UserPrincipal currentUser, Long follower) {
+        User user = userRepository.findById(currentUser.getId()).orElse(new User());
         for(Follow f : user.getFollowing()) {
             if(f.getFollower().getId().equals(follower)) {
                 return true;

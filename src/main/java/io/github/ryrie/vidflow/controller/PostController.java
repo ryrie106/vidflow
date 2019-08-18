@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@RequestMapping("/posts")
 @RestController
 @Slf4j
 public class PostController {
@@ -33,24 +34,23 @@ public class PostController {
         this.notificationService = notificationService;
     }
 
+    @GetMapping(value ="/")
+    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
+        return postService.getPosts(currentUser, id, page);
+    }
 
-    @GetMapping(value="/posts/postId")
+    @GetMapping(value="/postId")
     public ResponseEntity<?> getPostId() {
         Long pid = postService.getPostId();
         return ResponseEntity.ok().body(new ApiResponse(true, pid.toString()));
     }
 
-    @GetMapping(value = "/posts/{postId}")
+    @GetMapping(value = "/{postId}")
     public PostResponse getPostById(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {
         return postService.getPostById(currentUser, postId);
     }
 
-    @GetMapping(value = "/posts")
-    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
-        return postService.getPosts(currentUser, id, page);
-    }
-
-    @PostMapping(value = "/posts")
+    @PostMapping(value ="/")
     @PreAuthorize("hasRole('USER')")
     @Transactional
     public ResponseEntity<?> createPost(@CurrentUser UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
@@ -65,7 +65,7 @@ public class PostController {
                 .body(new ApiResponse(true, "Post Created Successfully"));
     }
 
-    @DeleteMapping(value = "/posts/{postId}")
+    @DeleteMapping(value = "/{postId}")
     @PreAuthorize("hasRole('USER')")
     ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
@@ -74,7 +74,7 @@ public class PostController {
 //        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/posts/like/{postId}")
+    @PostMapping(value = "/{postId}/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         Post post = postService.likePost(currentUser, postId);
@@ -82,25 +82,15 @@ public class PostController {
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 
-
-    @GetMapping(value = "/posts/user/{userId}")
-    public List<QueryPostsResponse> getUserPosts(@PathVariable Long userId) {
-        return postService.getUserPosts(userId);
-    }
-
-    @GetMapping(value = "/posts/likes/{userId}")
-    public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
-        return postService.getUserLikes(userId);
-    }
-
-    @DeleteMapping(value = "/posts/like/{postId}")
+    @DeleteMapping(value = "/{postId}/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.unlikePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 
-    @GetMapping(value = "/posts/query")
+
+    @GetMapping(value = "/query")
     public List<QueryPostsResponse> queryPostContent(@RequestParam("content") String content) {
         return postService.queryPostContent(content);
     }
