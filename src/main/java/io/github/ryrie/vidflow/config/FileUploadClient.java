@@ -12,8 +12,8 @@ import java.util.Random;
 @Slf4j
 public class FileUploadClient {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+//    @Value("${file.upload-dir}")
+    private String uploadDir = "/home/user/uploads";
 
     @Getter
     private String fileName;
@@ -37,7 +37,7 @@ public class FileUploadClient {
             e.printStackTrace();
         }
 
-        log.info("File : " + this.fileName + "  Upload Start");
+        log.info("File: " + this.fileName + "  Upload Start");
     }
 
     public void pushToFile(byte[] b) {

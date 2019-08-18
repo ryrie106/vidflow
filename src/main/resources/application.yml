@@ -20,7 +20,8 @@ spring:
 #    key-password: sslpassword
 
 file:
-  upload-dir: /home/ubuntu/www/uploads
+#  upload-dir: /home/ubuntu/www/uploads
+  upload-dir: /home/user/uploads
   upload-chunksize: 1048576 # 1MB
 
 app:

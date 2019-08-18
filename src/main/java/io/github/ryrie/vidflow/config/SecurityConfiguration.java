@@ -82,15 +82,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/**/*.html",
                             "/**/*.css",
                             "/**/*.js").permitAll()
-                    .antMatchers("/user/login").permitAll()
-                    .antMatchers("/user/create").permitAll()
-                    .antMatchers("/user/info/**").permitAll()
-                    .antMatchers("/user/query/**").permitAll()
-                    .antMatchers("/user/following/**").permitAll()
+                    .antMatchers("/auth/login").permitAll()
+                    .antMatchers("/users/create").permitAll()
+                    .antMatchers("/users/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                     .antMatchers("/comments/**").permitAll()
-                    .antMatchers("/videoUpload/**").permitAll()
-                    .antMatchers("/webstomp/**").permitAll()
+                    .antMatchers("/upload/**").permitAll()
                 .anyRequest()
                     .authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

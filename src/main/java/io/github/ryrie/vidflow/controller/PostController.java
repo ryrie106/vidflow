@@ -34,7 +34,7 @@ public class PostController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping(value ="/")
+    @GetMapping
     public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
         return postService.getPosts(currentUser, id, page);
     }
@@ -50,7 +50,7 @@ public class PostController {
         return postService.getPostById(currentUser, postId);
     }
 
-    @PostMapping(value ="/")
+    @PostMapping
     @PreAuthorize("hasRole('USER')")
     @Transactional
     public ResponseEntity<?> createPost(@CurrentUser UserPrincipal currentUser, @RequestBody PostRequest postRequest) {

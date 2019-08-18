@@ -22,7 +22,6 @@ public class UserController {
     private PostService postService;
     private NotificationService notificationService;
 
-
     public UserController(UserService userService, PostService postService, NotificationService notificationService) {
         this.userService = userService;
         this.postService = postService;
@@ -79,12 +78,12 @@ public class UserController {
         return ResponseEntity.ok().body(new ApiResponse(true, "unFollow user Successfully"));
     }
 
-    @GetMapping(value = "/users/{userId}/posts")
+    @GetMapping(value = "/{userId}/posts")
     public List<QueryPostsResponse> getUserPosts(@PathVariable Long userId) {
         return postService.getUserPosts(userId);
     }
 
-    @GetMapping(value = "/users/{userId}/likes")
+    @GetMapping(value = "/{userId}/likes")
     public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
         return postService.getUserLikes(userId);
     }

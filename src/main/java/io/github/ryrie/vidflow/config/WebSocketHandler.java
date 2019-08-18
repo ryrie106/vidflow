@@ -15,21 +15,23 @@ import java.util.Map;
 @Component
 public class WebSocketHandler extends AbstractWebSocketHandler {
 
-    private Map<Long, FileUploadClient> clients;
+    private Map<String, FileUploadClient> clients;
 
-    public WebSocketHandler(Map<Long, FileUploadClient> clients) {
+    public WebSocketHandler(Map<String, FileUploadClient> clients) {
         this.clients = clients;
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String uid = session.getId();
+        FileUploadClient c = clients.get(uid);
 
         try {
             JSONObject obj = new JSONObject(message.getPayload());
             JSONObject response;
             switch(obj.getString("type")) {
                 case "info":
-                    clients.put(Long.parseLong(session.getId()),
+                    clients.put(session.getId(),
                             new FileUploadClient(obj.getLong("uid"),
                                     obj.getString("extension"),
                                     obj.getLong("numChunks")));
@@ -37,6 +39,9 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
                     response.put("type", "start");
                     session.sendMessage(new TextMessage(response.toString()));
                     break;
+                case "complete":
+                    c.afterTransferComplete(); // fileOutputStream을 닫는다.
+                    clients.remove(uid);
                 default:
                     break;
             }
@@ -47,7 +52,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
-        Long uid = Long.parseLong(session.getId());
+        String uid = session.getId();
         FileUploadClient c = clients.get(uid);
         c.pushToFile(message.getPayload().array());
         JSONObject response;
@@ -59,9 +64,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
                 response = new JSONObject();
                 response.put("type", "complete");
                 response.put("fileName", c.getFileName());
-                c.afterTransferComplete(); // fileOutputStream을 닫는다.
                 session.sendMessage(new TextMessage(response.toString()));
-                clients.remove(uid);
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
