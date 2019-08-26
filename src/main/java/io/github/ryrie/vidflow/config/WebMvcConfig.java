@@ -1,12 +1,8 @@
 package io.github.ryrie.vidflow.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * CORS(Cross-origin Resource Sharing) 설정을 한다.

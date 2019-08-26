@@ -3,7 +3,6 @@ package io.github.ryrie.vidflow.config;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.util.Random;
 @Slf4j
 public class FileUploadClient {
 
-//    @Value("${file.upload-dir}")
     private String uploadDir = "/home/user/uploads";
 
     @Getter

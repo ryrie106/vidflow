@@ -2,13 +2,11 @@ package io.github.ryrie.vidflow.service;
 
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.domain.Post;
-import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.exception.AppException;
 import io.github.ryrie.vidflow.payload.CommentRequest;
 import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.repository.CommentRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
-import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

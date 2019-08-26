@@ -6,13 +6,11 @@ import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.repository.LikeRepository;
-import io.github.ryrie.vidflow.repository.NotificationRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -126,7 +124,7 @@ public class PostService {
 
     public List<QueryPostsResponse> queryPostContent(String content) {
         List<Post> posts = postRepository.findByContentContaining(content);
-        return posts.stream().map(post-> {
+        return posts.stream().map(post -> {
             QueryPostsResponse response = new QueryPostsResponse();
             response.setPostId(post.getId());
             response.setThumbnailSrc(post.getThumbnailsrc());

@@ -1,10 +1,6 @@
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+.sts4-cache
 
-/node_modules
+.vscode
 
 /resources/static/built
 
