@@ -1,6 +1,8 @@
 = WebAPI
 
-다음은 Vidflow에서 사용되는 API에 대한 소개이다.
+다음은 Vidflow에서 사용되는 WebAPI에 대한 소개이다.
+
+
 
 
 REST(Representational Style Transfer)은 Web Service의 Architecture Style이다. 처음에 오해할 만한 부분이 REST는 표준이 아니고
