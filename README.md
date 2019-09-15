@@ -7,11 +7,7 @@ Tiktok(www.tiktok.com)과 같은 기능을 하는 것을 목표로 하는 mobile
 
 ### 사용한 프레임워크/라이브러리
 
-Frontend : create-react-app을 이용하여 react.js 기반 SPA를 제작하였습니다.
-
-페이지 : https://ryrie.github.io/vidflow-view (모바일에서 접속을 권장합니다.)
-
-저장소 : www.github.com/ryrie/vidflow-view
+Frontend : create-react-app을 이용하여 react.js 기반 SPA를 제작하였습니다. www.github.com/ryrie/vidflow-web
 
 Backend : Spring Boot을 비롯한 Spring Framework : WebMVC, Security, Data JPA
 
@@ -29,6 +25,11 @@ DB : AWS RDS(MySQL)
 CI : travis.ci
 
 CD : AWS Codedeploy
+
+
+### 빌드 방법
+
+`docker-compose build && docker-compose up`
 
 ### 프로젝트 관련 문서
 

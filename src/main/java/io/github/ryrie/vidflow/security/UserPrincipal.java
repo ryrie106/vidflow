@@ -34,7 +34,6 @@ public class UserPrincipal implements UserDetails {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
         return new UserPrincipal(
-
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
@@ -44,7 +43,7 @@ public class UserPrincipal implements UserDetails {
         );
     }
 
-    /*
+    /**
      * Spring Security에서는 Username이 ID 역할을 한다.
      * vidflow에서는 email이 id 역할을 하므로 getUsername()은 User의 email을 반환한다.
      */

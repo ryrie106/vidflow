@@ -3,21 +3,25 @@ spring:
     show_sql: true
     database: MYSQL
     generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://vidflow-db.c3sgswc5qc63.ap-northeast-2.rds.amazonaws.com:3306/vidflow
-    username: mysqladmin
+    url: jdbc:mysql://localhost:3306/vidflow
+    username: mysqluser
     password: mysqlpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
 
-server:
- port: 8080
- ssl:
-   enabled: true
-   key-store: /home/ubuntu/key/vidflow.jks
-   key-store-password: sslpassword
-   key-password: sslpassword
+# server:
+#  port: 8080
+#  ssl:
+#    enabled: true
+#    key-store: /home/ubuntu/key/vidflow.jks
+#    key-store-password: sslpassword
+#    key-password: sslpassword
 
 file:
 #  upload-dir: /home/ubuntu/www/uploads

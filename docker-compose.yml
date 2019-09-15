@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/vidflow
+      SPRING_DATASOURCE_USERNAME: mysqluser
+      SPRING_DATASOURCE_PASSWORD: mysqlpassword
+    networks:
+      - backend
+  web:
+    image: ryrie106/vidflow-web:0.1
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - api-server
+    networks:
+      - frontend
+
+  db:
+    image: mysql:8.0.17
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: vidflow
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpassword
+      MYSQL_ROOT_PASSWORD: mysqlroot
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+volumes:
+  db-data:
+
+networks:
+  backend:
+  frontend:

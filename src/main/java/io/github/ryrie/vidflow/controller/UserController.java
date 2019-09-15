@@ -28,13 +28,13 @@ public class UserController {
         this.notificationService = notificationService;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createUser(@RequestBody SignUpRequest signUpRequest) {
         URI location = userService.createUser(signUpRequest);
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<QueryUserResponse> queryUsersName(@RequestParam("name") String name) {
         return userService.queryUserName(name);
     }
