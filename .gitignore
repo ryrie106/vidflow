@@ -7,3 +7,5 @@
 /target
 
 .settings
+
+/src/main/resources/application-production.yml

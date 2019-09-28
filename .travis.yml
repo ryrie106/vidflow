@@ -10,8 +10,6 @@ cache:
   directories:
     - '$HOME/.m2/repository'
 
-script: "./mvnw compile"
-
 notifications:
   email:
     recipients:
@@ -20,6 +18,8 @@ notifications:
 before_install:
   - chmod +x mvnw
   - chmod +x execute-deploy.sh
+
+script: "./mvnw package"
 
 before_deploy:
   - zip -r vidflow * .*
