@@ -22,7 +22,7 @@ before_install:
 script: "./mvnw package"
 
 before_deploy:
-  - zip -r vidflow * .*
+  - zip -r vidflow *
   - mkdir -p deploy
   - mv vidflow.zip deploy/vidflow.zip
 
