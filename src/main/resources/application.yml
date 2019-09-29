@@ -16,6 +16,11 @@ spring:
 #    initialization-mode: always
 server:
   port: 8080
+  ssl:
+    enabled: true
+    key-store: /home/ubuntu/key/vidflow.jks
+    key-store-password: sslpassword
+    key-password: sslpassword
 
 app:
   jwtSecret: JWTSuperSecretKey
