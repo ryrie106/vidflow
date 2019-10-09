@@ -78,12 +78,12 @@ public class UserController {
         return ResponseEntity.ok().body(new ApiResponse(true, "unFollow user Successfully"));
     }
 
-    @GetMapping(value = "/{userId}/posts")
+    @GetMapping("/{userId}/posts")
     public List<QueryPostsResponse> getUserPosts(@PathVariable Long userId) {
         return postService.getUserPosts(userId);
     }
 
-    @GetMapping(value = "/{userId}/likes")
+    @GetMapping("/{userId}/likes")
     public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
         return postService.getUserLikes(userId);
     }

@@ -16,12 +16,15 @@ spring:
 #    initialization-mode: always
 server:
   port: 8080
-  ssl:
-    enabled: true
-    key-store: /home/ubuntu/key/vidflow.jks
-    key-store-password: sslpassword
-    key-password: sslpassword
+#  ssl:
+#    enabled: true
+#    key-store: /home/ubuntu/key/vidflow.jks
+#    key-store-password: sslpassword
+#    key-password: sslpassword
 
 app:
   jwtSecret: JWTSuperSecretKey
-  jwtExpirationInMs: 604800000
+  jwtExpirationTime: 3600000 # 1hour
+  s3BucketName: vidflow
+  s3UploadURLExpirationTime: 300000 #5mins
+

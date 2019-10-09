@@ -39,13 +39,13 @@ public class PostController {
         return postService.getPosts(currentUser, id, page);
     }
 
-    @GetMapping(value="/postId")
+    @GetMapping("/postId")
     public ResponseEntity<?> getPostId() {
         Long pid = postService.getPostId();
         return ResponseEntity.ok().body(new ApiResponse(true, pid.toString()));
     }
 
-    @GetMapping(value = "/{postId}")
+    @GetMapping("/{postId}")
     public PostResponse getPostById(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {
         return postService.getPostById(currentUser, postId);
     }
@@ -65,16 +65,16 @@ public class PostController {
                 .body(new ApiResponse(true, "Post Created Successfully"));
     }
 
-    @DeleteMapping(value = "/{postId}")
+    @DeleteMapping("/{postId}")
     @PreAuthorize("hasRole('USER')")
-    ResponseEntity<?> deletePost(@PathVariable Long postId) {
+    public ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         // TODO: deletePost에 실패하면?
         return ResponseEntity.ok().body(new ApiResponse(true, "Post Deleted Successfully"));
 //        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/{postId}/like")
+    @PostMapping("/{postId}/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         Post post = postService.likePost(currentUser, postId);
@@ -82,7 +82,7 @@ public class PostController {
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
 
-    @DeleteMapping(value = "/{postId}/like")
+    @DeleteMapping("/{postId}/like")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
         postService.unlikePost(currentUser, postId);
@@ -90,7 +90,7 @@ public class PostController {
     }
 
 
-    @GetMapping(value = "/query")
+    @GetMapping("/query")
     public List<QueryPostsResponse> queryPostContent(@RequestParam("content") String content) {
         return postService.queryPostContent(content);
     }

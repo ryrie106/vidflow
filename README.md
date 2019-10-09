@@ -1,5 +1,6 @@
-# Vidflow [![Build Status](https://travis-ci.org/ryrie/vidflow.svg?branch=master)](https://travis-ci.org/ryrie/vidflow)
+# Vidflow 
 
+[![Build Status](https://travis-ci.org/ryrie/vidflow.svg?branch=master)](https://travis-ci.org/ryrie/vidflow)
 
 [Tiktok](www.tiktok.com)을 모티브로 한 mobile web application 입니다.
 
