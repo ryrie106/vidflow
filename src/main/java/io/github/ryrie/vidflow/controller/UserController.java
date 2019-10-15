@@ -2,12 +2,12 @@ package io.github.ryrie.vidflow.controller;
 
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.payload.*;
-import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
 import io.github.ryrie.vidflow.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+    public UserSummary getCurrentUser(@AuthenticationPrincipal UserPrincipal currentUser) {
         return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
@@ -55,25 +55,25 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> editUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+    public ResponseEntity<?> editUser(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long userId) {
         return null;
     }
 
     @GetMapping("/{userId}/follow")
-    public boolean isFollowing(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+    public boolean isFollowing(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long userId) {
         return userService.isFollowing(currentUser, userId);
     }
 
     @PostMapping("/{userId}/follow")
     @Transactional
-    public ResponseEntity<?> followUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+    public ResponseEntity<?> followUser(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long userId) {
         User follower = userService.followUser(currentUser, userId);
         notificationService.followNotify(currentUser, follower);
         return ResponseEntity.ok().body(new ApiResponse(true, "Follow user Successfully"));
     }
 
     @DeleteMapping("/{userId}/follow")
-    public ResponseEntity<?> unfollowUser(@CurrentUser UserPrincipal currentUser, @PathVariable Long userId) {
+    public ResponseEntity<?> unfollowUser(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long userId) {
         userService.unfollowUser(currentUser, userId);
         return ResponseEntity.ok().body(new ApiResponse(true, "unFollow user Successfully"));
     }

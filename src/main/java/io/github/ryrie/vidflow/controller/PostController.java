@@ -5,7 +5,6 @@ import io.github.ryrie.vidflow.payload.ApiResponse;
 import io.github.ryrie.vidflow.payload.PostRequest;
 import io.github.ryrie.vidflow.payload.PostResponse;
 import io.github.ryrie.vidflow.payload.QueryPostsResponse;
-import io.github.ryrie.vidflow.security.CurrentUser;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,7 +35,7 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getPosts(@CurrentUser UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
+    public List<PostResponse> getPosts(@AuthenticationPrincipal UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
         return postService.getPosts(currentUser, id, page);
     }
 
@@ -46,14 +46,14 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostResponse getPostById(@CurrentUser UserPrincipal currentUser, @PathVariable("postId") Long postId) {
+    public PostResponse getPostById(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable("postId") Long postId) {
         return postService.getPostById(currentUser, postId);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @Transactional
-    public ResponseEntity<?> createPost(@CurrentUser UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
+    public ResponseEntity<?> createPost(@AuthenticationPrincipal UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
         Post post = postService.createPost(currentUser, postRequest);
         notificationService.newPostNotify(currentUser, post.getId());
 
@@ -76,7 +76,7 @@ public class PostController {
 
     @PostMapping("/{postId}/like")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> likePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
+    public ResponseEntity<?> likePost(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long postId) {
         Post post = postService.likePost(currentUser, postId);
         notificationService.likePostNotify(currentUser, post);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
@@ -84,7 +84,7 @@ public class PostController {
 
     @DeleteMapping("/{postId}/like")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> unlikePost(@CurrentUser UserPrincipal currentUser, @PathVariable Long postId) {
+    public ResponseEntity<?> unlikePost(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable Long postId) {
         postService.unlikePost(currentUser, postId);
         return ResponseEntity.ok().body(new ApiResponse(true, "Post like Successfully"));
     }
