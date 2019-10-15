@@ -41,7 +41,10 @@ public class UserController {
 
     @GetMapping("/me")
     public UserSummary getCurrentUser(@AuthenticationPrincipal UserPrincipal currentUser) {
-        return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+        if(currentUser == null) {
+            return new UserSummary(0L, "guest", "guest");
+        }
+        else return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
     @GetMapping("/{userId}")

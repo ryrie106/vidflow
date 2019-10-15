@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Spring Security에서 인증할 유저정보를 repository에서 불러와 지정하는 UserDetailsService를 확장한 Service
+ * Spring Security 에서 인증할 유저정보를 repository 에서 불러와 지정하는 UserDetailsService 를 확장한 Service
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return UserPrincipal.create(user);
     }
 
-    // JWTAuthenticatilnFilter에서 사용됨
+    // JWTAuthenticationFilter 에서 사용됨
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
