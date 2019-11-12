@@ -8,7 +8,7 @@
 
 ### 사용한 프레임워크/라이브러리
 
-Frontend : react.js [저장소 바로가기](www.github.com/ryrie/vidflow-web)
+Frontend : react.js [저장소 바로가기](https://github.com/ryrie/vidflow-web)
 
 Backend : Spring Boot
 
