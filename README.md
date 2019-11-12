@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ryrie/vidflow.svg?branch=master)](https://travis-ci.org/ryrie/vidflow)
 
-[Tiktok](www.tiktok.com)을 모티브로 한 mobile web application 입니다.
+[Tiktok](https://www.tiktok.com)을 모티브로 한 mobile web application 입니다.
 
 저의 개발 공부의 목적으로만 사용됩니다. 
 
