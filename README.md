@@ -12,26 +12,9 @@ Frontend : react.js [저장소 바로가기](www.github.com/ryrie/vidflow-web)
 
 Backend : Spring Boot
 
-### 현재 프로젝트에서 사용하고 있는 환경
-
-Web Frontend HOST : Github Page
-
-Web API server HOST : AWS EC2 Ubuntu 18.04
-
-Video Content : AWS S3
-
-DB : AWS RDS(MySQL)
-
-CI : travis.ci
-
-CD : AWS Codedeploy
 
 
-### 빌드 방법
-
-with docker
-
-`docker-compose build && docker-compose up`
+![](docs/architecture.png)https://whimsical.com/8GuyXPfT9u4WDGciFb2tZU
 
 ### 프로젝트 관련 문서
 
