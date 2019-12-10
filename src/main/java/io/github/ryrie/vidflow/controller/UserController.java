@@ -52,6 +52,7 @@ public class UserController {
         return userService.getUserInfo(userId);
     }
 
+    // TODO: userId 안받도록 수정하기
     @GetMapping("/{userId}/notification")
     public List<NotificationResponse> getNotifications(@PathVariable Long userId) {
         return userService.getNotifications(userId);

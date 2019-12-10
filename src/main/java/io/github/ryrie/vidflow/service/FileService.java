@@ -3,6 +3,7 @@ package io.github.ryrie.vidflow.service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -61,7 +62,7 @@ public class FileService {
         URL url = new URL("https://vidflow.ryrie.xyz");
         try {
             AmazonS3 s3Client =  AmazonS3ClientBuilder.standard()
-                    .withCredentials(new ProfileCredentialsProvider())
+                    .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                     .withRegion(clientRegion)
                     .build();
 
