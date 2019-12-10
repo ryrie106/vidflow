@@ -62,7 +62,6 @@ public class FileService {
         URL url = new URL("https://vidflow.ryrie.xyz");
         try {
             AmazonS3 s3Client =  AmazonS3ClientBuilder.standard()
-                    .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                     .withRegion(clientRegion)
                     .build();
 
