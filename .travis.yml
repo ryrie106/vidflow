@@ -47,7 +47,7 @@ deploy:
     key: vidflow.zip
     bundle_type: zip
     application: vidflow
-    deployment_group: vidflow-group
+    deployment_group: vidflow-deploy-group
     region: ap-northeast-2
     wait-until-deployed: true
     on:
