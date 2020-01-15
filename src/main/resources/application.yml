@@ -10,11 +10,12 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
+    # url, username, password : docker-compose에서 입력
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
 
 app:
-  jwtSecret: JWTSuperSecretKey
+  # jwtSecret: docker-compose에서 입력
   jwtExpirationTime: 3600000 # 1hour
 
 ---
@@ -30,14 +31,12 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://vidflow.ca5v4eaafsj2.ap-northeast-2.rds.amazonaws.com
-    username: mysqladmin
-    password: mysqlpassword
+    # url, username, password: ec2 인스턴스에서 실행 시 argument로 입력
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
 
 app:
-  jwtSecret: JWTSuperSecretKey
+  # jwtSecret: ec2 인스턴스에서 실행 시 argument로 입력
   jwtExpirationTime: 3600000 # 1hour
-  s3BucketName: vidflow-s3
+  # s3BucketName: ec2 인스턴스에서 실행 시 argument로 입력
   s3UploadURLExpirationTime: 300000 #5mins
