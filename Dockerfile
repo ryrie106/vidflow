@@ -5,23 +5,21 @@ WORKDIR /app
 
 COPY mvnw .
 COPY .mvn .mvn
-
 COPY pom.xml .
-
-RUN ./mvnw dependency:go-offline -B
-
 COPY src src
 
 RUN ./mvnw package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 # Stage 2
 FROM openjdk:8-jre-alpine
 
-ARG DEPENDENCY=/app/target/dependency
+WORKDIR /app
+ARG SPRING_DATASOURCE_URL
+ARG SPRING_DATASOURCE_USERNAME
+ARG SPRING_DATASOURCE_PASSWORD
+ENV url=$SPRING_DATASOURCE_URL
+ENV username=$SPRING_DATASOURCE_USERNAME
+ENV password=$SPRING_DATASOURCE_PASSWORD
 
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-
-ENTRYPOINT ["java", "-cp", "app:app/lib/*", "io.github.ryrie.vidflow.VidflowApplication"]
+COPY --from=build /app/target/vidflow-*.jar vidflow.jar
+ENTRYPOINT ["java", "-jar", "vidflow.jar", "--spring.profiles.active=dev", "--spring.datasource.url=${url}", "--spring.datasource.username=${username}", "--spring.datasource.password=${password}"]
