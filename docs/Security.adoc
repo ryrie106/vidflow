@@ -72,14 +72,14 @@ Web Application의 보안은 여러 방법이 있다. 그 중에서도 HTTP의 �
 최근 웹 서비스에서는 HTTPS가 필수적으로 적용되고 있으며, 보안에 신경을 많이 쓰는 웹 브라우저들은 HTTPS 연결이 아니면
 요청을 차단하기도 한다. 따라서 모든 웹 요청에 HTTPS를 적용해야 한다.
 
-Spring boot에서 TLS를 설정하는 방법은 간단하다.
-
-먼저 keytool을 사용하여 TLS 인증서를 jks 파일로 변환한 뒤 ``application.yml``에 다음과 같이 설정하면 된다.
-
-./src/main/resources/application.yml
-[source,yaml]
-----
-include::../src/main/resources/application.yml[lines=14..20]
-----
+//Spring boot에서 TLS를 설정하는 방법은 간단하다.
+//
+//먼저 keytool을 사용하여 TLS 인증서를 jks 파일로 변환한 뒤 ``application.yml``에 다음과 같이 설정하면 된다.
+//
+//./src/main/resources/application.yml
+//[source,yaml]
+//----
+//include::../src/main/resources/application.yml[lines=14..20]
+//----
 
 

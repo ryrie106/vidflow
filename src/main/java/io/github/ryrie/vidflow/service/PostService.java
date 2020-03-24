@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,43 +36,39 @@ public class PostService {
         this.likeRepository = likeRepository;
     }
 
-    @Transactional
-    public Post createPost(UserPrincipal currentUser, PostRequest postRequest) {
+    public Post createPost(PostRequest postRequest) {
         Post post = new Post();
         post.setThumbnailsrc(postRequest.getThumbnailSrc());
         post.setVideosrc(postRequest.getVideoSrc());
         post.setContent(postRequest.getContent());
+        return createPost(post);
+    }
+
+    public Post createPost(User user, PostRequest postRequest) {
+        return null;
+    }
+
+    public Post createPost(Post post) {
         return postRepository.save(post);
     }
 
-    public Long getPostId() {
-        return postRepository.getMaxId();
+    public PostResponse getPostById(User user, Long postId) {
+//        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("findById during getPostByid"));
+        Optional<Post> post = postRepository.findById(postId);
+        assert(post.isPresent());
+        return Mapper.mapPostToPostResponse(post.get(), user);
     }
 
-    public PostResponse getPostById(UserPrincipal currentUser, Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("findById during getPostByid"));
-
-        if(currentUser == null)
-            return Mapper.mapPostToPostResponse(post, null);
-
-        return Mapper.mapPostToPostResponse(post, currentUser.getDomain());
-    }
-
-    public List<PostResponse> getPosts(UserPrincipal currentUser, Long id, Long page) {
-        PageRequest pageRequest = PageRequest.of(page.intValue(), 3, Sort.by("id").descending());
-        Page<Post> posts = postRepository.findByIdLessThanEqual(id, pageRequest);
-
-        // TODO: 마음에 안드는데 다른 방법이 없을까
-        if(currentUser == null)
-            return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, null)).collect(Collectors.toList());
-
-        return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, currentUser.getDomain())).collect(Collectors.toList());
+    public List<PostResponse> getPosts(User user, Long postId) {
+//        PageRequest pageRequest = PageRequest.of(page.intValue(), 5, Sort.by("id").descending());
+        List<Post> posts = postRepository.findTop5ByIdLessThanEqualOrderByIdDesc(postId);
+        assert(posts!=null);
+        return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, user)).collect(Collectors.toList());
     }
 
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Delete Post"));
         postRepository.delete(post);
-
     }
 
     @Transactional

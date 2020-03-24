@@ -5,7 +5,7 @@ import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.payload.PostResponse;
 
 public class Mapper {
-    public static PostResponse mapPostToPostResponse(Post post, User currentUser) {
+    public static PostResponse mapPostToPostResponse(Post post, User user) {
 
         PostResponse postResponse = new PostResponse();
         postResponse.setId(post.getId());
@@ -26,10 +26,10 @@ public class Mapper {
         postResponse.setIsliked(false);
         postResponse.setIsfollowed(false);
 
-        if(currentUser != null) {
+        if(user != null) {
             // 로그인한 경우 좋아요 여부 확인
             for (Like like : post.getLikes()) {
-                if(currentUser.getId().equals(like.getUser().getId())) {
+                if(user.getId().equals(like.getUser().getId())) {
                     postResponse.setIsliked(true);
                     break;
                 }

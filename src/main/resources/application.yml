@@ -1,7 +1,23 @@
 spring:
+  profiles: test
+  jpa:
+    show_sql: true
+    database: h2
+    generate-ddl: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+
+app:
+  jwtSecret: jwtSecret
+  jwtExpirationTime: 3600000 # 1hour
+  s3BucketName: foo
+  s3UploadURLExpirationTime: 300000 #5mins
+
+---
+spring:
   profiles: dev
   jpa:
-    show_sql: false
+    show_sql: true
     database: MYSQL
     generate-ddl: true
     properties:

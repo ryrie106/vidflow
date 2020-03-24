@@ -35,26 +35,26 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getPosts(@AuthenticationPrincipal UserPrincipal currentUser, @RequestParam("id") Long id, @RequestParam("page") Long page) {
-        return postService.getPosts(currentUser, id, page);
+    public List<PostResponse> getPosts(@AuthenticationPrincipal UserPrincipal currentUser, @RequestParam("id") Long id) {
+        return postService.getPosts(currentUser.getDomain(), id);
     }
 
-    @GetMapping("/postId")
-    public ResponseEntity<?> getPostId() {
-        Long pid = postService.getPostId();
-        return ResponseEntity.ok().body(new ApiResponse(true, pid.toString()));
-    }
+//    @GetMapping("/postId")
+//    public ResponseEntity<?> getPostId() {
+//        Long pid = postService.getPostId();
+//        return ResponseEntity.ok().body(new ApiResponse(true, pid.toString()));
+//    }
 
     @GetMapping("/{postId}")
     public PostResponse getPostById(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable("postId") Long postId) {
-        return postService.getPostById(currentUser, postId);
+        return postService.getPostById(currentUser.getDomain(), postId);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @Transactional
     public ResponseEntity<?> createPost(@AuthenticationPrincipal UserPrincipal currentUser, @RequestBody PostRequest postRequest) {
-        Post post = postService.createPost(currentUser, postRequest);
+        Post post = postService.createPost(postRequest);
         notificationService.newPostNotify(currentUser, post.getId());
 
         URI location = ServletUriComponentsBuilder

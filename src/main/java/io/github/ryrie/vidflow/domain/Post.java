@@ -34,10 +34,10 @@ public class Post {
 
     private String thumbnailsrc = "";
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
     @CreatedDate
