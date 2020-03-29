@@ -36,7 +36,8 @@ public class PostController {
 
     @GetMapping
     public List<PostResponse> getPosts(@AuthenticationPrincipal UserPrincipal currentUser, @RequestParam("id") Long id) {
-        return postService.getPosts(currentUser.getDomain(), id);
+        // TODO:
+        return postService.getPosts(currentUser == null ? null : currentUser.getDomain(), id);
     }
 
 //    @GetMapping("/postId")
@@ -47,7 +48,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public PostResponse getPostById(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable("postId") Long postId) {
-        return postService.getPostById(currentUser.getDomain(), postId);
+        return postService.getPostById(currentUser == null ? null : currentUser.getDomain(), postId);
     }
 
     @PostMapping
