@@ -98,7 +98,7 @@ public class PostServiceTest {
             postService.createPost(post);
         }
 
-        List<PostResponse> responses = postService.getPosts(null, 14L);
+        List<PostResponse> responses = postService.getPosts(null, -1L);
         assertEquals(Long.valueOf(14), responses.get(0).getId());
         assertEquals(Long.valueOf(13), responses.get(1).getId());
         assertEquals(Long.valueOf(12), responses.get(2).getId());

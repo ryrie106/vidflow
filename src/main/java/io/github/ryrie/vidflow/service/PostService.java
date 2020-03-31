@@ -61,6 +61,7 @@ public class PostService {
 
     public List<PostResponse> getPosts(User user, Long postId) {
 //        PageRequest pageRequest = PageRequest.of(page.intValue(), 5, Sort.by("id").descending());
+        if(postId == -1) postId = postRepository.getMaxId();
         List<Post> posts = postRepository.findTop5ByIdLessThanEqualOrderByIdDesc(postId);
         assert(posts!=null);
         return posts.stream().map(post -> Mapper.mapPostToPostResponse(post, user)).collect(Collectors.toList());

@@ -13,6 +13,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findById(Long id);
 
+    @Query("SELECT coalesce(max(p.id), 0) FROM Post p")
+    Long getMaxId();
+
     List<Post> findTop5ByIdLessThanEqualOrderByIdDesc(Long id);
 
     List<Post> findByContentContaining(String content);
