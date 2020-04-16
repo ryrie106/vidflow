@@ -12,7 +12,7 @@ Frontend : react.js [저장소 바로가기](https://github.com/ryrie/vidflow-we
 
 Backend : Spring Boot
 
-![](docs/architecture.png)https://whimsical.com/8GuyXPfT9u4WDGciFb2tZU
+![](docs/structure.png)https://whimsical.com/8GuyXPfT9u4WDGciFb2tZU
 
 ### 프로젝트 관련 문서
 
