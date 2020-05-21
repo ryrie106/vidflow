@@ -72,7 +72,6 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    @Transactional
     public Post likePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findById during likePost"));
@@ -80,22 +79,22 @@ public class PostService {
         like.setPost(post);
         like.setUser(user);
         likeRepository.save(like);
-        User writer = post.getWriter();
-        // TODO: 경쟁조건이 될 수 있을까
-        writer.setNum_liked(writer.getNum_liked()+1);
+        synchronized(this) {
+            User writer = post.getWriter();
+            writer.setNum_liked(writer.getNum_liked() + 1);
+        }
         return post;
     }
 
-    @Transactional
     public void unlikePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during unlikePost"));
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
-        User writer = post.getWriter();
-        // TODO: 경쟁조건이 될 수 있을까?
-        writer.setNum_liked(writer.getNum_liked()-1);
-//        return post;
+        synchronized(this) {
+            User writer = post.getWriter();
+            writer.setNum_liked(writer.getNum_liked() - 1);
+        }
     }
 
     public List<QueryPostsResponse> getUserPosts(Long userId) {
