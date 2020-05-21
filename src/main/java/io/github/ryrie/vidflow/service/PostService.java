@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostService {
 
-    private PostRepository postRepository;
-    private UserRepository userRepository;
-    private LikeRepository likeRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     public PostService(PostRepository postRepository, UserRepository userRepository,
                        LikeRepository likeRepository) {
@@ -72,7 +72,6 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    @Transactional
     public Post likePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new AppException("findById during likePost"));
@@ -81,21 +80,21 @@ public class PostService {
         like.setUser(user);
         likeRepository.save(like);
         User writer = post.getWriter();
-        // TODO: 경쟁조건이 될 수 있을까
-        writer.setNum_liked(writer.getNum_liked()+1);
+        synchronized(this) {
+            writer.setNum_liked(writer.getNum_liked() + 1);
+        }
         return post;
     }
 
-    @Transactional
     public void unlikePost(UserPrincipal currentUser, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException("Post"));
         User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during unlikePost"));
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
         User writer = post.getWriter();
-        // TODO: 경쟁조건이 될 수 있을까?
-        writer.setNum_liked(writer.getNum_liked()-1);
-//        return post;
+        synchronized(this) {
+            writer.setNum_liked(writer.getNum_liked() - 1);
+        }
     }
 
     public List<QueryPostsResponse> getUserPosts(Long userId) {
