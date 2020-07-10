@@ -1,11 +1,4 @@
-.sts4-cache
-
-.vscode
-
-/resources/static/built
-
-/target
-
-.settings
-
 /src/main/resources/application-production.yml
+.idea/
+build/
+.gradle/
