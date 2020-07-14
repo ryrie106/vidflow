@@ -10,6 +10,7 @@ import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 @Slf4j
 public class PostService {
@@ -28,13 +30,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository,
-                       LikeRepository likeRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.likeRepository = likeRepository;
-    }
 
     public Post createPost(PostRequest postRequest) {
         Post post = new Post();

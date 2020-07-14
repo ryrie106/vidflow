@@ -8,6 +8,7 @@ import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@AllArgsConstructor
 @RequestMapping("/posts")
 @RestController
 @Slf4j
 public class PostController {
 
-    private PostService postService;
-    private NotificationService notificationService;
-
-    @Autowired
-    public PostController(PostService postService, NotificationService notificationService) {
-        this.postService = postService;
-        this.notificationService = notificationService;
-    }
+    private final PostService postService;
+    private final NotificationService notificationService;
 
     @GetMapping
     public List<PostResponse> getPosts(@AuthenticationPrincipal UserPrincipal currentUser, @RequestParam("id") Long id) {

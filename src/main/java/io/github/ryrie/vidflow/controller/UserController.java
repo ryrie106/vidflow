@@ -6,6 +6,7 @@ import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
 import io.github.ryrie.vidflow.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,19 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@AllArgsConstructor
 @RequestMapping("/users")
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private PostService postService;
-    private NotificationService notificationService;
-
-    public UserController(UserService userService, PostService postService, NotificationService notificationService) {
-        this.userService = userService;
-        this.postService = postService;
-        this.notificationService = notificationService;
-    }
+    private final UserService userService;
+    private final PostService postService;
+    private final NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody SignUpRequest signUpRequest) {

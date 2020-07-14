@@ -9,6 +9,7 @@ import io.github.ryrie.vidflow.repository.CommentRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private PostRepository postRepository;
-
-    @Autowired
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
-        this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
-    }
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     public List<CommentResponse> getCommentsByPostId(UserPrincipal currentUser, Long postId) {
         // TODO: 애매한 Optional
