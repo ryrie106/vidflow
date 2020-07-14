@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.payload.ApiResponse;
@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/v1/posts")
 @RestController
 @Slf4j
 public class PostController {

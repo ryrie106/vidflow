@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.payload.ApiResponse;
@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("/comments")
+@RequestMapping("/v1/comments")
 @RestController
 public class CommentController {
 

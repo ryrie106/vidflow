@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.payload.ApiResponse;
 import io.github.ryrie.vidflow.payload.LoginRequest;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 @RestController
 @Slf4j
 public class AuthController {

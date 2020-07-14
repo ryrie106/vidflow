@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.payload.FileInfoResponse;
 import io.github.ryrie.vidflow.security.UserPrincipal;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/v1/files")
 @Slf4j
 public class FileController {
 

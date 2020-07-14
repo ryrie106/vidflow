@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.payload.*;
@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 @RestController
 public class UserController {
 
@@ -87,17 +87,4 @@ public class UserController {
     public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
         return postService.getUserLikes(userId);
     }
-
-//    @GetMapping("/checkNameAvailability")
-//    public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "name") String name) {
-//        Boolean isAvailable = !userRepository.existsByName(name);
-//        return new UserIdentityAvailability(isAvailable);
-//    }
-//
-//    @GetMapping("/checkEmailAvailability")
-//    public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
-//        Boolean isAvailable = !userRepository.existsByEmail(email);
-//        return new UserIdentityAvailability(isAvailable);
-//    }
-
 }
