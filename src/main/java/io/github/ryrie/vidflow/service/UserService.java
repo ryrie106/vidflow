@@ -7,6 +7,7 @@ import io.github.ryrie.vidflow.repository.FollowRepository;
 import io.github.ryrie.vidflow.repository.RoleRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,22 +18,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class UserService {
 
-    private RoleRepository roleRepository;
-    private FollowRepository followRepository;
-    private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
-
-    @Autowired
-    public UserService(RoleRepository roleRepository, FollowRepository followRepository,
-                       PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.roleRepository = roleRepository;
-        this.followRepository = followRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
+    private final RoleRepository roleRepository;
+    private final FollowRepository followRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     public URI createUser(SignUpRequest signUpRequest) {
 //        if(userRepository.existsByEmail(signUpRequest.getEmail())) {

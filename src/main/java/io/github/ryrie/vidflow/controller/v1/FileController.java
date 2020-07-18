@@ -1,8 +1,9 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.payload.FileInfoResponse;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.FileService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,16 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/v1/files")
 @Slf4j
 public class FileController {
 
-    private FileService fileService;
-
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
+    private final FileService fileService;
 
     @PostMapping("/{type}")
     public FileInfoResponse getUploadFileRequest(@AuthenticationPrincipal UserPrincipal currentUser,

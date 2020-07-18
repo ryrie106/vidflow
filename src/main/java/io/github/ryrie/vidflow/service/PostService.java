@@ -10,6 +10,7 @@ import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.util.Mapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +22,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 @Slf4j
 public class PostService {
 
-    private PostRepository postRepository;
-    private UserRepository userRepository;
-    private LikeRepository likeRepository;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository,
-                       LikeRepository likeRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.likeRepository = likeRepository;
-    }
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     public Post createPost(PostRequest postRequest) {
         Post post = new Post();
@@ -79,8 +74,8 @@ public class PostService {
         like.setPost(post);
         like.setUser(user);
         likeRepository.save(like);
+        User writer = post.getWriter();
         synchronized(this) {
-            User writer = post.getWriter();
             writer.setNum_liked(writer.getNum_liked() + 1);
         }
         return post;
@@ -91,8 +86,8 @@ public class PostService {
         User user = userRepository.findByEmail(currentUser.getEmail()).orElseThrow(()->new AppException("findByEmail during unlikePost"));
         Like like = likeRepository.findByPostAndUser(post, user).orElseThrow(() -> new AppException("findByPostAndUser during unlikePost"));
         likeRepository.delete(like);
+        User writer = post.getWriter();
         synchronized(this) {
-            User writer = post.getWriter();
             writer.setNum_liked(writer.getNum_liked() - 1);
         }
     }

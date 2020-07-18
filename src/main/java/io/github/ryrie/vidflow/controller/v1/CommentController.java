@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.domain.Comment;
 import io.github.ryrie.vidflow.payload.ApiResponse;
@@ -7,6 +7,7 @@ import io.github.ryrie.vidflow.payload.CommentResponse;
 import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.CommentService;
 import io.github.ryrie.vidflow.service.NotificationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,18 +19,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/comments")
+@AllArgsConstructor
+@RequestMapping("/v1/comments")
 @RestController
 public class CommentController {
 
-    private CommentService commentService;
-    private NotificationService notificationService;
-
-    @Autowired
-    public CommentController(CommentService commentService, NotificationService notificationService) {
-        this.commentService = commentService;
-        this.notificationService = notificationService;
-    }
+    private final CommentService commentService;
+    private final NotificationService notificationService;
 
     @GetMapping("/{postId}")
     public List<CommentResponse> getComments(@AuthenticationPrincipal UserPrincipal currentUser, @PathVariable("postId") Long postId) {

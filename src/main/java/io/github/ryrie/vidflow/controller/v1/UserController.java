@@ -1,4 +1,4 @@
-package io.github.ryrie.vidflow.controller;
+package io.github.ryrie.vidflow.controller.v1;
 
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.payload.*;
@@ -6,6 +6,7 @@ import io.github.ryrie.vidflow.security.UserPrincipal;
 import io.github.ryrie.vidflow.service.NotificationService;
 import io.github.ryrie.vidflow.service.PostService;
 import io.github.ryrie.vidflow.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,19 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/users")
+@AllArgsConstructor
+@RequestMapping("/v1/users")
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private PostService postService;
-    private NotificationService notificationService;
-
-    public UserController(UserService userService, PostService postService, NotificationService notificationService) {
-        this.userService = userService;
-        this.postService = postService;
-        this.notificationService = notificationService;
-    }
+    private final UserService userService;
+    private final PostService postService;
+    private final NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody SignUpRequest signUpRequest) {
@@ -91,17 +87,4 @@ public class UserController {
     public List<QueryPostsResponse> getUserLikes(@PathVariable Long userId) {
         return postService.getUserLikes(userId);
     }
-
-//    @GetMapping("/checkNameAvailability")
-//    public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "name") String name) {
-//        Boolean isAvailable = !userRepository.existsByName(name);
-//        return new UserIdentityAvailability(isAvailable);
-//    }
-//
-//    @GetMapping("/checkEmailAvailability")
-//    public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
-//        Boolean isAvailable = !userRepository.existsByEmail(email);
-//        return new UserIdentityAvailability(isAvailable);
-//    }
-
 }

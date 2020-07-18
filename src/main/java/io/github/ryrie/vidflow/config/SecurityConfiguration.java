@@ -4,7 +4,7 @@ import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.security.CustomUserDetailsService;
 import io.github.ryrie.vidflow.security.JwtAuthenticationEntryPoint;
 import io.github.ryrie.vidflow.security.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,31 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private CustomUserDetailsService customUserDetailsService;
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
-                                 JwtAuthenticationEntryPoint unauthorizedHandler,
-                                 JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.unauthorizedHandler = unauthorizedHandler;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
-
-//    @Bean
-//    // implements a filter that
-//    // reads JWT authentication token from the Authorization header of all the requests
-//    // loads the user details associated with that token.
-//    // Sets the user details in Spring Security's SecurityContext. Spring Security uses the user details to
-//    // perform authorization checks. We can also access the user details stored in the SecurityContext in our
-//    // controllers to perform our business logic.
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-//        return new JwtAuthenticationFilter();
-//    }
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -82,12 +63,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/**/*.html",
                             "/**/*.css",
                             "/**/*.js").permitAll()
-                    .antMatchers("/auth/login").permitAll()
-                    .antMatchers("/users/create").permitAll()
-                    .antMatchers("/users/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
-                    .antMatchers("/comments/**").permitAll()
-                    .antMatchers("/upload/**").permitAll()
+                    .antMatchers("/v1/auth/login").permitAll()
+                    .antMatchers("/v1/users/create").permitAll()
+                    .antMatchers("/v1/users/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/v1/posts/**").permitAll()
+                    .antMatchers("/v1/comments/**").permitAll()
+                    .antMatchers("/v1/upload/**").permitAll()
+                    // swagger
+                    .antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest()
                     .authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

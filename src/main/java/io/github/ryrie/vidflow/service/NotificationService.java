@@ -3,21 +3,18 @@ package io.github.ryrie.vidflow.service;
 import io.github.ryrie.vidflow.domain.*;
 import io.github.ryrie.vidflow.repository.NotificationRepository;
 import io.github.ryrie.vidflow.security.UserPrincipal;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+@AllArgsConstructor
 @Service
 public class NotificationService {
 
-    private NotificationRepository notificationRepository;
-
-    @Autowired
-    public NotificationService(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
-    }
+    private final NotificationRepository notificationRepository;
 
     @Transactional
     public void newPostNotify(UserPrincipal currentUser, Long postId) {
