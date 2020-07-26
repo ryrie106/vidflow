@@ -1,4 +1,4 @@
-= JPA
+= Hibernate
 
 이 프로젝트에서는 ORM Framework로 Spring Data JPA를 사용하였다.
 

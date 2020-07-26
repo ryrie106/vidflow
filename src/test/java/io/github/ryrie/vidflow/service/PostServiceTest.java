@@ -2,6 +2,7 @@ package io.github.ryrie.vidflow.service;
 
 import io.github.ryrie.vidflow.domain.Post;
 import io.github.ryrie.vidflow.payload.PostResponse;
+import io.github.ryrie.vidflow.payload.QueryPostsResponse;
 import io.github.ryrie.vidflow.repository.LikeRepository;
 import io.github.ryrie.vidflow.repository.PostRepository;
 import io.github.ryrie.vidflow.repository.UserRepository;
@@ -111,6 +112,15 @@ public class PostServiceTest {
         assertEquals(Long.valueOf(7), responses.get(2).getId());
         assertEquals(Long.valueOf(6), responses.get(3).getId());
         assertEquals(Long.valueOf(5), responses.get(4).getId());
+    }
+
+    @Test
+    @Order(4)
+    public void queryPostContentTest() {
+        List<QueryPostsResponse> emptyResponse = postService.queryPostContent("NotInAnyPost");
+        assertEquals(Integer.valueOf(0), emptyResponse.size());
+        List<QueryPostsResponse> contentsResponse = postService.queryPostContent("content");
+        System.out.println(contentsResponse.size());
     }
 
 }
