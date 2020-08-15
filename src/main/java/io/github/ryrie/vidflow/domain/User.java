@@ -22,8 +22,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
     @Id @GeneratedValue
     private Long id;
 
@@ -32,6 +30,10 @@ public class User {
     private String name;
 
     private String password;
+
+    private String introduction = "";
+
+    private Long num_liked = 0L;
 
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
@@ -63,10 +65,6 @@ public class User {
 
     @OneToMany(mappedBy = "fromuser", fetch = FetchType.LAZY)
     private List<Notification> notifications_fromuser = new ArrayList<>();
-
-    private String introduction = "";
-
-    private Long num_liked = 0L;
 
     public User(String email, String name, String password) {
         this.name = name;

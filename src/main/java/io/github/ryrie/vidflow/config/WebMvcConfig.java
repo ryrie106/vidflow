@@ -10,7 +10,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         long MAX_AGE_SECS = 3600;
         registry.addMapping("/**")
-                .allowedOrigins("https://vidflow.ryrie.me")
+                .allowedOrigins("https://vidflow.ryrie.me", "http://localhost:3000")
 //                .allowedOrigins("*")
                 .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE", "")
                 .maxAge(MAX_AGE_SECS);

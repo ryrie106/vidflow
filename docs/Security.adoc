@@ -38,10 +38,23 @@ Restful API Web 서비스에서는 form 기반 로그인을 할 수 없기 때�
 localstorage에 저장하고, 모든 요청시 토큰을 포함하도록 했다. 여기서는 JWT(JSON Web Token)을 사용하였다.
 
 === 로그인을 하면 새로운 token을 반환한다.
-./src/main/java/io/github/ryrie/vidflow/controller/UserController.java
 [source,java]
 ----
-//include::../src/main/java/io/github/ryrie/vidflow/controller/UserController.java[lines=44..57]
+public class AuthController {
+        public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwt = tokenProvider.generateToken(authentication);
+            return ResponseEntity.ok(new ApiResponse(true, jwt));
+        }
+}
 ----
 
 === 웹 요청시 servlet filter에서 token 정보를 찾는다.
