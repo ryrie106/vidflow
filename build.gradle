@@ -4,6 +4,11 @@ plugins {
     id 'org.springframework.boot' version '2.2.5.RELEASE'
 }
 
+group = 'io.github.ryrie'
+version = '0.0.1-SNAPSHOT'
+description = 'vidflow'
+sourceCompatibility = '11'
+
 repositories {
     mavenCentral()
     jcenter()
@@ -34,10 +39,9 @@ dependencies {
 
 }
 
-group = 'io.github.ryrie'
-version = '0.0.1-SNAPSHOT'
-description = 'vidflow'
-sourceCompatibility = '11'
+test {
+    useJUnitPlatform()
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'

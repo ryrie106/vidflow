@@ -2,6 +2,7 @@ package io.github.ryrie.vidflow.security;
 
 import io.github.ryrie.vidflow.domain.User;
 import io.github.ryrie.vidflow.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,14 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Spring Security 에서 인증할 유저정보를 repository 에서 불러와 지정하는 UserDetailsService 를 확장한 Service
  */
 @Service
+@AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
-
-    @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
